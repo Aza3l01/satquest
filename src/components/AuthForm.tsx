@@ -33,7 +33,7 @@ export default function AuthForm() {
 
   return (
     <div className="max-w-md w-full p-6 bg-white/30 shadow-lg rounded-lg">
-      <h1 className="text-xl font-bold mb-4">{isLogin ? "Sign In" : "Sign Up"} To Play!</h1>
+      <h1 className="text-xl font-bold mb-4 text-center">{isLogin ? "Sign In" : "Sign Up"} To Play!</h1>
 
       <button className="bg-gray-100 p-2 rounded w-full mb-2 cursor-pointer text-black" onClick={handleOAuthLogin}>
         Continue with Google
