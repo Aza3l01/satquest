@@ -32,46 +32,46 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="max-w-md w-full p-6 bg-white/30 shadow-lg rounded-lg">
-      <h1 className="text-xl font-bold mb-4 text-center">{isLogin ? "Sign In" : "Sign Up"} To Play!</h1>
+    <div className="max-w-md w-full p-6 bg-white/30 backdrop-blur-lg shadow-lg rounded-lg">
+      <h1 className="text-xl font-bold mb-4 text-center text-white">{isLogin ? "Sign In" : "Sign Up"} To Play!</h1>
 
-      <button className="bg-gray-100 p-2 rounded w-full mb-2 cursor-pointer text-black" onClick={handleOAuthLogin}>
+      <button className="bg-gray-800 p-2 rounded w-full mb-2 cursor-pointer text-white" onClick={handleOAuthLogin}>
         Continue with Google
       </button>
 
-      <div className="my-4 border-t border-gray-300"></div>
+      <div className="my-4 border-t border-gray-500"></div>
 
       <input
         type="email"
         placeholder="Email"
-        className="w-full p-2 border rounded my-1"
+        className="w-full p-2 border border-gray-500 bg-black/20 text-white rounded my-1"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
         placeholder="Password"
-        className="w-full p-2 border rounded my-1"
+        className="w-full p-2 border border-gray-500 bg-black/20 text-white rounded my-1"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 
       {isLogin && (
-        <a href="#" className="text-blue-500 text-sm" onClick={handleForgotPassword}>
+        <a href="#" className="text-emerald-400 text-sm" onClick={handleForgotPassword}>
           Forgot Password?
         </a>
       )}
 
       <button
-        className="mt-4 w-full bg-blue-500 text-white p-2 rounded cursor-pointer"
+        className="mt-4 w-full bg-emerald-500 text-white p-2 rounded cursor-pointer hover:bg-emerald-600"
         onClick={handleEmailAuth}
       >
         {isLogin ? "Sign In" : "Sign Up"}
       </button>
 
-      <p className="text-xs mt-2 text-gray-500">
+      <p className="text-xs mt-2 text-gray-300">
         {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-        <a href="#" className="underline" onClick={() => setIsLogin(!isLogin)}>
+        <a href="#" className="underline text-emerald-400" onClick={() => setIsLogin(!isLogin)}>
           {isLogin ? "Sign Up" : "Sign In"}
         </a>
       </p>
