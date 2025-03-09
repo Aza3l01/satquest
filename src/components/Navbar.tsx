@@ -8,7 +8,7 @@ export default function Navbar({ user }: { user: any }) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    window.location.reload(); // Refresh page to reflect logout
+    window.location.reload();
   };
 
   return (

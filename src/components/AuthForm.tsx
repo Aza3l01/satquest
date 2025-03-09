@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 export default function AuthForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLogin, setIsLogin] = useState(false); // Default to Sign Up
+  const [isLogin, setIsLogin] = useState(false);
 
   const handleOAuthLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({ provider: "google" });
