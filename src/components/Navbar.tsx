@@ -73,6 +73,12 @@ export default function Navbar({ user }: { user: any }) {
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-lg text-black">
               <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg" onClick={handleLogout}>
+                Profile
+              </button>
+              <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg" onClick={handleLogout}>
+                Settings
+              </button>
+              <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg" onClick={handleLogout}>
                 Log Out
               </button>
             </div>
