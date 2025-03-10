@@ -11,8 +11,8 @@ export default function Navbar({ user }: { user: any }) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    window.location.reload();
-  };
+    window.location.href = "/"; // Redirect to homepage after logout
+  };  
 
   // Function to determine styles for active and hover effects
   const getTabClass = (path: string) =>
@@ -20,9 +20,9 @@ export default function Navbar({ user }: { user: any }) {
      before:absolute before:inset-0 before:rounded-full before:blur-lg 
      ${
        pathname === path
-         ? "before:bg-blue-800/30" // Active tab effect
-         : "before:bg-transparent hover:before:bg-blue-800/30" // Hover effect
-     }`;  
+         ? "before:bg-blue-700/30"  // Active state
+         : "before:bg-transparent hover:before:bg-blue-700/30" // Hover state
+     }`;    
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-black/30 backdrop-blur-lg shadow-md px-6 py-2 flex justify-between items-center h-14">
@@ -47,9 +47,10 @@ export default function Navbar({ user }: { user: any }) {
           </Link>
 
           {/* Play (Centered, Links to Home) */}
-          <Link href="/" className={`${getTabClass("/")} font-bold text-lg`}>
+          <Link href="/play" className={`${getTabClass("/play")} font-bold text-lg`}>
             Play
           </Link>
+
 
           {/* Premium */}
           <Link href="/premium" className={getTabClass("/premium")}>
