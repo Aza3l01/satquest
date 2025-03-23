@@ -7,8 +7,8 @@ export default function AuthForm() {
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(false);
 
-  const handleOAuthLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({ provider: "google" });
+  const handleOAuthLogin = async (provider: "google" | "discord") => {
+    const { error } = await supabase.auth.signInWithOAuth({ provider });
     if (error) alert(error.message);
   };
 
@@ -35,8 +35,18 @@ export default function AuthForm() {
     <div className="max-w-md w-full p-6 bg-white/30 backdrop-blur-lg shadow-lg rounded-lg">
       <h1 className="text-xl font-bold mb-4 text-center text-white">{isLogin ? "Sign In" : "Sign Up"} To Play!</h1>
 
-      <button className="bg-gray-800 p-2 rounded w-full mb-2 cursor-pointer text-white" onClick={handleOAuthLogin}>
+      <button 
+        className="bg-gray-800 p-2 rounded w-full mb-2 cursor-pointer text-white" 
+        onClick={() => handleOAuthLogin("google")}
+      >
         Continue with Google
+      </button>
+
+      <button 
+        className="bg-gray-800 p-2 rounded w-full mb-2 cursor-pointer text-white" 
+        onClick={() => handleOAuthLogin("discord")}
+      >
+        Continue with Discord
       </button>
 
       <div className="my-4 border-t border-gray-500"></div>
