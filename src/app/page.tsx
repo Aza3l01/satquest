@@ -16,7 +16,7 @@ export default function Home() {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
-        router.push("/play"); // Redirect logged-in users
+        router.push("/play");
       } else {
         setUser(null);
       }
@@ -24,7 +24,7 @@ export default function Home() {
     getUser();
   }, [router]);
 
-  if (user) return null; // Prevents flashing content before redirect
+  if (user) return null;
 
   return (
     <>
