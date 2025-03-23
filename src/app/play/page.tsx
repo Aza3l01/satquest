@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { User } from "@supabase/supabase-js";
 import Navbar from "@/components/Navbar";
-import Image from "next/image";
 
 export default function PlayPage() {
   const [user, setUser] = useState<User | null>(null);
