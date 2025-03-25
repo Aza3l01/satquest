@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { User } from "@supabase/supabase-js";
 import Navbar from "@/components/Navbar";
+import Link from "next/link";
 
 export default function PlayPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -63,10 +64,13 @@ export default function PlayPage() {
           <p className="text-lg font-semibold">{user?.email || "Guest"}</p>
         </div>
 
-        {/* Play Button */}
-        <button className="mt-6 px-6 py-3 bg-emerald-500 text-white text-lg font-bold rounded-lg shadow-md hover:bg-emerald-600 transition">
+        {/* Updated Play Button with Link */}
+        <Link 
+          href="/play/static"
+          className="mt-6 px-6 py-3 bg-emerald-500 text-white text-lg font-bold rounded-lg shadow-md hover:bg-emerald-600 transition"
+        >
           Play
-        </button>
+        </Link>
 
       </main>
     </>
