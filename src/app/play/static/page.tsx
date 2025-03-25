@@ -224,7 +224,7 @@ export default function StaticPage() {
         </div>
 
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-lg text-lg z-10">
-          Time: {formatTime(timeLeft)}
+          {formatTime(timeLeft)}
         </div>
 
         <button
@@ -237,20 +237,20 @@ export default function StaticPage() {
         {(timerEnded || accuracy !== null) && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-20">
             <div className="bg-white p-8 rounded-lg text-center max-w-md mx-4">
-              <h2 className="text-3xl font-bold mb-4">
+              <h2 className="text-3xl text-black font-bold mb-4">
                 {guessLocation ? "Results" : "Time's Up!"}
               </h2>
               {guessLocation ? (
                 <>
-                  <p className="text-2xl mb-2">Accuracy: {accuracy?.toFixed(2)}%</p>
-                  <p className="text-lg">
+                  <p className="text-2xl text-black mb-2">Accuracy: {accuracy?.toFixed(2)}%</p>
+                  <p className="text-lg text-black">
                     Distance: {distance(actualLocation, guessLocation, { units: "kilometers" }).toFixed(2)} km
                   </p>
                 </>
               ) : (
-                <p className="text-xl">You didn't guess a location!</p>
+                <p className="text-xl text-black">You didn't guess a location!</p>
               )}
-              <p className="text-lg mt-4">
+              <p className="text-lg mt-4 text-black">
                 {cityName}, {country}
               </p>
               <div className="flex gap-4 justify-center mt-6">
@@ -264,7 +264,7 @@ export default function StaticPage() {
                   onClick={() => router.push("/play")}
                   className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
                 >
-                  Back to Play
+                  Back to Menu
                 </button>
               </div>
             </div>
