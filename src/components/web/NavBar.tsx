@@ -37,7 +37,6 @@ export default function NavBar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-black/30 backdrop-blur-lg shadow-md px-6 py-2 flex justify-between items-center h-14 z-50">
-      {/* Logo */}
       <Image
         src="/logo_big.png"
         alt="SatQuest Logo"
@@ -45,7 +44,6 @@ export default function NavBar() {
         height={40}
       />
 
-      {/* Navigation Tabs */}
       <div className="flex items-center space-x-6">
         <Link href="/friends" className={getTabClass('/friends')}>
           Friends
@@ -64,7 +62,6 @@ export default function NavBar() {
         </Link>
       </div>
 
-      {/* User Dropdown */}
       <div className="relative">
         <button className="text-white font-medium" onClick={() => setDropdownOpen(!dropdownOpen)}>
           {user.email}
