@@ -1,9 +1,60 @@
-import React from 'react'
+'use client'
+import { useRouter } from 'next/navigation'
 
-const page = () => {
+const PlayPage = () => {
+  const router = useRouter()
+
   return (
-    <div>play landing page | select game mode type here</div>
+    <div className="min-h-screen bg-black text-white p-6">
+      <h1 className="text-3xl font-bold mb-8 text-center">SatQuest Play Hub</h1>
+      
+      <div className="max-w-2xl mx-auto bg-gray-900 rounded-xl p-8 shadow-lg">
+        <h2 className="text-2xl font-semibold mb-6 text-emerald-300">Select Game Mode</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <button
+            onClick={() => router.push('/play/singleplayer')}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white py-4 px-6 rounded-lg transition duration-300 flex flex-col items-center"
+          >
+            <span className="text-xl font-bold">Singleplayer</span>
+            <span className="text-sm mt-2 text-gray-300">Challenge yourself solo</span>
+          </button>
+
+          <button
+            className="bg-gray-800 text-gray-400 py-4 px-6 rounded-lg cursor-not-allowed flex flex-col items-center"
+            disabled
+          >
+            <span className="text-xl font-bold">Multiplayer</span>
+            <span className="text-sm mt-2">Coming soon</span>
+          </button>
+
+          <button
+            className="bg-gray-800 text-gray-400 py-4 px-6 rounded-lg cursor-not-allowed flex flex-col items-center"
+            disabled
+          >
+            <span className="text-xl font-bold">Party Mode</span>
+            <span className="text-sm mt-2">Coming soon</span>
+          </button>
+
+          <button
+            className="bg-gray-800 text-gray-400 py-4 px-6 rounded-lg cursor-not-allowed flex flex-col items-center"
+            disabled
+          >
+            <span className="text-xl font-bold">Tournaments</span>
+            <span className="text-sm mt-2">Coming soon</span>
+          </button>
+        </div>
+
+        <div className="mt-12 pt-6 border-t border-gray-800">
+          <h3 className="text-xl font-semibold mb-4">News & Announcements</h3>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <p className="text-emerald-400">🎉 New locations added weekly!</p>
+            <p className="mt-2 text-gray-300">Daily challenges starting next month</p>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
-export default page
+export default PlayPage
