@@ -1,9 +1,15 @@
-import React from 'react'
+'use client'
 
-const page = () => {
+import GameEngine from '@/components/game/GameEngine';
+import { useParams } from 'next/navigation';
+
+export default function SinglePlayerGame() {
+  const params = useParams();
+  const mode = params.mode as string;
+
   return (
-    <div>singleplayer[mode] play page import GameEngine here</div>
-  )
+    <div className="h-screen">
+      <GameEngine mode={mode} />
+    </div>
+  );
 }
-
-export default page
