@@ -32,7 +32,8 @@ export default function GuessMap({
       L.tileLayer('https://sierramapstiles.onrender.com/tiles/{x}/{y}/{z}?layer=m', {
         maxZoom: 19,
         tileSize: 256,
-        detectRetina: true,
+        detectRetina: false,
+        crossOrigin: true,
         attribution: '© AQUILA Maps'
       }).addTo(mapInstance);
       

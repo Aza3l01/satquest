@@ -28,7 +28,8 @@ export default function SatelliteMap({ lat, lon }: { lat: number; lon: number })
       L.tileLayer('https://sierramapstiles.onrender.com/tiles/{x}/{y}/{z}?layer=s', {
         maxZoom: 19,
         tileSize: 256,
-        detectRetina: true
+        crossOrigin: true,
+        detectRetina: false
       }).addTo(mapRef.current);
     } else {
       mapRef.current.setView(position, 14);
