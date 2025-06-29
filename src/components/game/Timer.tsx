@@ -1,5 +1,4 @@
-import React from 'react';
-
+// Timer.tsx
 export default function Timer({ timeLeft }: { timeLeft: number }) {
   const formatTime = () => {
     const minutes = Math.floor(timeLeft / 60);
@@ -7,10 +6,16 @@ export default function Timer({ timeLeft }: { timeLeft: number }) {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
+  // Dynamic classes for time pressure
+  const getTimerStyle = () => {
+    if (timeLeft > 30) return "bg-green-500/80";
+    if (timeLeft > 10) return "bg-yellow-500/80";
+    return "bg-red-500/80 animate-pulse";
+  };
+
   return (
-    <div className="flex items-center bg-black/70 text-white px-4 py-2 rounded-lg">
+    <div className={`flex items-center ${getTimerStyle()} text-white px-4 py-2 rounded-lg transition-colors duration-300`}>
       <div className="font-mono font-bold">{formatTime()}</div>
-      <span className="ml-2">remaining</span>
     </div>
   );
 }

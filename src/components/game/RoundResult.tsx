@@ -59,7 +59,7 @@ export default function RoundResult({
     L.polyline([actualPos, guessPos], {
       color: '#ff0000',
       weight: 2,
-      dashArray: '5, 5'
+      // dashArray: '5, 5'
     }).addTo(mapRef.current);
     
     return () => {

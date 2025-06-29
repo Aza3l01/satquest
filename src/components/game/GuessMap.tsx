@@ -22,7 +22,7 @@ export default function GuessMap({
     if (!containerRef.current) return;
     
     if (!mapRef.current) {
-      mapRef.current = L.map(containerRef.current, {
+      const mapInstance = L.map(containerRef.current, {
         center: [30, 0],
         zoom: 2,
         zoomControl: false,
@@ -34,9 +34,9 @@ export default function GuessMap({
         tileSize: 256,
         detectRetina: true,
         attribution: '© AQUILA Maps'
-      }).addTo(mapRef.current);
+      }).addTo(mapInstance);
       
-      mapRef.current.on('click', (e: L.LeafletMouseEvent) => {
+      mapInstance.on('click', (e: L.LeafletMouseEvent) => {
         if (markerRef.current) markerRef.current.remove();
         
         const coords: [number, number] = [e.latlng.lng, e.latlng.lat];
@@ -49,8 +49,10 @@ export default function GuessMap({
             iconSize: [24, 24],
             iconAnchor: [12, 12]
           })
-        }).addTo(mapRef.current);
+        }).addTo(mapInstance);
       });
+      
+      mapRef.current = mapInstance;
     }
     
     return () => {
@@ -61,7 +63,6 @@ export default function GuessMap({
     };
   }, []);
   
-  // Update map size when expanded state changes
   useEffect(() => {
     if (mapRef.current) {
       setTimeout(() => {
@@ -74,8 +75,8 @@ export default function GuessMap({
     <div 
       className={`relative transition-all duration-300 ${
         isExpanded 
-          ? 'w-[50vw] h-[37.5vw] max-w-[800px] max-h-[600px]' // 50vw width, 37.5vw height (4:3 ratio)
-          : 'w-[15vw] h-[11.25vw] min-w-[180px] min-h-[135px]' // 15vw width, 11.25vw height (4:3 ratio)
+          ? 'w-[50vw] h-[37.5vw] max-w-[800px] max-h-[600px]'
+          : 'w-[15vw] h-[11.25vw] min-w-[180px] min-h-[135px]'
       } bg-white rounded-lg overflow-hidden border-2 border-emerald-500 shadow-lg ${
         !isExpanded && 'opacity-80 hover:opacity-100'
       }`}

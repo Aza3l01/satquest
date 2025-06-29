@@ -104,7 +104,7 @@ export default function GameEngine({ mode }: { mode: string }) {
   
   return (
     <div className="relative h-screen w-full bg-black overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 z-10 flex justify-between p-4 bg-black/70">
+      <div className="absolute top-0 left-0 right-0 z-10 flex justify-between p-4 bg-black/0">
         <RoundCounter current={round} total={5} />
         <Timer timeLeft={timeLeft} />
         <button 
