@@ -165,6 +165,6 @@ function calculateDistance(
 
 
 function calculateAccuracy(distance: number): number {
-  const maxDistance = 5;
+  const maxDistance = 10000;
   return Math.max(0, 100 - (distance / maxDistance) * 100);
 }
