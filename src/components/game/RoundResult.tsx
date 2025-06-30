@@ -11,6 +11,8 @@ export default function RoundResult({
 }) {
   const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const tileLayerRef = useRef<L.TileLayer | null>(null);
+  const markersRef = useRef<L.LayerGroup | null>(null);
   
   useEffect(() => {
     if (!containerRef.current || !result) return;
@@ -20,49 +22,68 @@ export default function RoundResult({
     
     if (!mapRef.current) {
       mapRef.current = L.map(containerRef.current, {
-        center: actualPos,
-        zoom: 4,
-        zoomControl: false
+        zoomControl: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        touchZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        dragging: false
       });
       
-      L.tileLayer('https://sierramapstiles.onrender.com/tiles/{x}/{y}/{z}?layer=y', {
-        maxZoom: 19
-      }).addTo(mapRef.current);
-    } else {
-      mapRef.current.setView(actualPos, 4);
+      tileLayerRef.current = L.tileLayer(
+        'https://sierramapstiles.onrender.com/tiles/{x}/{y}/{z}?layer=y', 
+        { 
+          maxZoom: 19,
+        }
+      ).addTo(mapRef.current);
+      
+      markersRef.current = L.layerGroup().addTo(mapRef.current);
+    }
+
+    const bounds = L.latLngBounds([actualPos, guessPos]);
+    bounds.pad(1);
+    
+    mapRef.current.fitBounds(bounds);
+
+    if (markersRef.current) {
+      markersRef.current.clearLayers();
+      
+      L.marker(actualPos, {
+        icon: L.divIcon({
+          className: 'correct-marker',
+          html: `<div class="w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>`,
+          iconSize: [24, 24],
+          iconAnchor: [12, 12]
+        })
+      }).addTo(markersRef.current);
+      
+      L.marker(guessPos, {
+        icon: L.divIcon({
+          className: 'guess-marker',
+          html: `<div class="w-6 h-6 bg-red-500 rounded-full border-2 border-white"></div>`,
+          iconSize: [24, 24],
+          iconAnchor: [12, 12]
+        })
+      }).addTo(markersRef.current);
+      
+      L.polyline([actualPos, guessPos], {
+        color: '#ff0000',
+        weight: 2,
+      }).addTo(markersRef.current);
     }
     
-    mapRef.current.eachLayer(layer => {
-      if (layer instanceof L.Marker || layer instanceof L.Polyline) {
-        mapRef.current?.removeLayer(layer);
-      }
-    });
-    
-    L.marker(actualPos, {
-      icon: L.divIcon({
-        className: 'correct-marker',
-        html: `<div class="w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>`,
-        iconSize: [24, 24],
-        iconAnchor: [12, 12]
-      })
-    }).addTo(mapRef.current);
-    
-    L.marker(guessPos, {
-      icon: L.divIcon({
-        className: 'guess-marker',
-        html: `<div class="w-6 h-6 bg-red-500 rounded-full border-2 border-white"></div>`,
-        iconSize: [24, 24],
-        iconAnchor: [12, 12]
-      })
-    }).addTo(mapRef.current);
-    
-    L.polyline([actualPos, guessPos], {
-      color: '#ff0000',
-      weight: 2,
-      // dashArray: '5, 5'
-    }).addTo(mapRef.current);
+    setTimeout(() => {
+      mapRef.current?.invalidateSize({ pan: false });
+    }, 10);
     
     return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+        tileLayerRef.current = null;
+        markersRef.current = null;
+      }
     };
   }, [result]);
   
