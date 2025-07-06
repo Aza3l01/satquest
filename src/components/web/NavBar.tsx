@@ -4,9 +4,11 @@ import Image from 'next/image'
 import { supabase } from '@/lib/supabaseClient'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { getProfile } from '@/lib/profile'
 
 export default function NavBar() {
   const [user, setUser] = useState<any>(null)
+  const [profile, setProfile] = useState<any>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
@@ -15,6 +17,10 @@ export default function NavBar() {
     const fetchUser = async () => {
       const { data } = await supabase.auth.getUser()
       setUser(data.user)
+      if (data.user) {
+        const profileData = await getProfile(data.user.id)
+        setProfile(profileData)
+      }
     }
     fetchUser()
   }, [])
@@ -63,17 +69,45 @@ export default function NavBar() {
       </div>
 
       <div className="relative">
-        <button className="text-white font-medium" onClick={() => setDropdownOpen(!dropdownOpen)}>
-          {user.email}
+        <button 
+          className="text-white font-medium flex items-center" 
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        >
+          {/* Avatar with fallback */}
+          {profile?.avatar_url ? (
+            <img 
+              src={profile.avatar_url} 
+              alt="Avatar" 
+              className="w-8 h-8 rounded-full mr-2 object-cover"
+            />
+          ) : (
+            <div className="bg-emerald-600 rounded-full w-8 h-8 flex items-center justify-center mr-2">
+              <span className="font-bold">
+                {profile?.display_name?.charAt(0)?.toUpperCase() || 'U'}
+              </span>
+            </div>
+          )}
+          
+          {/* Display name or email prefix */}
+          <span className="max-w-[120px] truncate">
+            {profile?.display_name || user.email?.split('@')[0]}
+          </span>
         </button>
+        
         {dropdownOpen && (
-          <div className="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-lg text-black">
-            <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg">
+          <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-lg text-black z-50">
+            <Link href="/profile" 
+              className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
+              onClick={() => setDropdownOpen(false)}
+            >
               Profile
-            </button>
-            <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg">
+            </Link>
+            <Link href="/settings" 
+              className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
+              onClick={() => setDropdownOpen(false)}
+            >
               Settings
-            </button>
+            </Link>
             <button
               className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
               onClick={handleLogout}

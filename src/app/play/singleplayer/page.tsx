@@ -1,7 +1,9 @@
 'use client'
+
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import { useEffect, useState } from 'react'
+import { getProfile } from '@/lib/profile'
 
 type GameMode = {
   id: string
@@ -13,9 +15,9 @@ type GameMode = {
 const SingleplayerPage = () => {
   const router = useRouter()
   const [userEmail, setUserEmail] = useState<string | null>(null)
+  const [profile, setProfile] = useState<any>(null) // Add profile state
   const [loading, setLoading] = useState(true)
 
-  // Define game modes with region data
   const gameModes: GameMode[] = [
     {
       id: 'world',
@@ -53,6 +55,12 @@ const SingleplayerPage = () => {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       setUserEmail(user?.email || null)
+      
+      if (user) {
+        const profileData = await getProfile(user.id)
+        setProfile(profileData)
+      }
+      
       setLoading(false)
     }
     
@@ -74,7 +82,6 @@ const SingleplayerPage = () => {
         <p className="text-gray-400 mb-8">Select a region to test your geography skills</p>
         
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Game Mode Selection */}
           <div className="lg:w-2/3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {gameModes.map((mode) => (
@@ -101,18 +108,29 @@ const SingleplayerPage = () => {
             </div>
           </div>
           
-          {/* User Info Panel */}
           <div className="lg:w-1/3">
             <div className="bg-gray-900 rounded-xl p-6 sticky top-6">
               <h2 className="text-xl font-bold mb-6 text-emerald-400">Player Info</h2>
               
               <div className="flex items-center mb-6">
-                <div className="bg-gray-800 rounded-full w-12 h-12 flex items-center justify-center mr-4">
-                  <span className="text-lg">👤</span>
-                </div>
+                {profile?.avatar_url ? (
+                  <img 
+                    src={profile.avatar_url} 
+                    alt="Avatar" 
+                    className="rounded-full w-12 h-12 mr-4"
+                  />
+                ) : (
+                  <div className="bg-emerald-600 rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                    <span className="text-lg">
+                      {profile?.display_name?.charAt(0)?.toUpperCase() || 'U'}
+                    </span>
+                  </div>
+                )}
                 <div>
-                  <h3 className="font-semibold">Signed in as:</h3>
-                  <p className="text-gray-300 break-all">{userEmail}</p>
+                  <h3 className="font-semibold">
+                    {profile?.display_name || userEmail?.split('@')[0] || 'Player'}
+                  </h3>
+                  <p className="text-gray-300 text-sm break-all">{userEmail}</p>
                 </div>
               </div>
               
