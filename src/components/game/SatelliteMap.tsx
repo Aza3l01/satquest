@@ -25,7 +25,7 @@ export default function SatelliteMap({ lat, lon }: { lat: number; lon: number })
         keyboard: false
       });
       
-      L.tileLayer('https://sierramapstiles.onrender.com/tiles/{x}/{y}/{z}?layer=s', {
+      L.tileLayer('https://sierramaps.ftp.sh/tiles/{x}/{y}/{z}?layer=s', {
         maxZoom: 19,
         tileSize: 256,
         crossOrigin: true,

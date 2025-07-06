@@ -32,7 +32,7 @@ export default function RoundResult({
       });
       
       tileLayerRef.current = L.tileLayer(
-        'https://sierramapstiles.onrender.com/tiles/{x}/{y}/{z}?layer=y', 
+        'https://sierramaps.ftp.sh/tiles/{x}/{y}/{z}?layer=y', 
         { 
           maxZoom: 19,
         }

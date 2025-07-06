@@ -31,7 +31,7 @@ export default function GuessMap({
       });
       
       tileLayerRef.current = L.tileLayer(
-        'https://sierramapstiles.onrender.com/tiles/{x}/{y}/{z}?layer=m', 
+        'https://sierramaps.ftp.sh/tiles/{x}/{y}/{z}?layer=m', 
         {
           maxZoom: 19,
           tileSize: 256,
