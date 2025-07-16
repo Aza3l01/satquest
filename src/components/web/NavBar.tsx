@@ -44,7 +44,7 @@ export default function NavBar() {
   return (
     <nav className="fixed top-0 left-0 w-full bg-black/30 backdrop-blur-lg shadow-md px-6 py-2 flex justify-between items-center h-14 z-50">
       <Image
-        src="/logo_big.png"
+        src="/logo_big.svg"
         alt="SatQuest Logo"
         width={120}
         height={40}
