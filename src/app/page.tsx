@@ -20,13 +20,20 @@ export default function HomePage() {
   if (loggedIn === null) return null
 
   return (
-    <main className="min-h-screen bg-black text-white p-6 flex flex-col items-center">
+    <main
+      className={`min-h-screen text-white p-6 flex flex-col items-center ${
+        !loggedIn ? 'bg-cover bg-center bg-no-repeat' : 'bg-black'
+      }`}
+      style={!loggedIn ? { backgroundImage: "url('/bg.png')" } : {}}
+    >
       {loggedIn && <NavBar />}
 
       {loggedIn ? (
         <div className="text-center mt-10">
           <h1 className="text-3xl font-bold mb-4">You are signed in</h1>
-          <p>Right side premium info left side big play button saying play casual games for free or something like that</p>
+          <p>
+            Right side premium info, left side big play button saying "Play casual games for free" or something like that
+          </p>
           <button
             onClick={() => router.push('/play')}
             className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded"
@@ -36,9 +43,8 @@ export default function HomePage() {
         </div>
       ) : (
         <>
-          {/* Guest view with marketing and SignUpForm */}
           <div className="text-center mb-10 max-w-2xl">
-            <h1 className="text-5xl font-extrabold font-mono text-emerald-300 drop-shadow-md">SatQuest</h1>
+            <img src="/logo_big.svg" alt="SatQuest Logo" className="h-20 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mt-2">Explore From Above!</h2>
             <p className="text-md text-gray-200 mt-2">
               SatQuest is a geography guessing game that tests your ability to recognize locations from satellite images.
