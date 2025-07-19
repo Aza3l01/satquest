@@ -16,17 +16,17 @@ export default function FinalResult({
         
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="bg-blue-50 p-4 rounded-lg text-center">
-            <p className="text-gray-600">Total Score</p>
+            <p className="text-black">Total Score</p>
             <p className="text-3xl font-bold">{totalScore}</p>
           </div>
           
           <div className="bg-blue-50 p-4 rounded-lg text-center">
-            <p className="text-gray-600">Avg Accuracy</p>
+            <p className="text-black">Avg Accuracy</p>
             <p className="text-3xl font-bold text-green-600">{avgAccuracy.toFixed(2)}%</p>
           </div>
           
           <div className="bg-blue-50 p-4 rounded-lg text-center">
-            <p className="text-gray-600">Total Distance</p>
+            <p className="text-black">Total Distance</p>
             <p className="text-3xl font-bold">{totalDistance.toFixed(2)} km</p>
           </div>
         </div>

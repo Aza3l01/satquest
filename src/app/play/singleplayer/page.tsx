@@ -1,156 +1,172 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
-import { useEffect, useState } from 'react'
 import { getProfile } from '@/lib/profile'
+import NavBar from '@/components/web/NavBar'
 
-type GameMode = {
+type Country = {
   id: string
   name: string
-  description: string
-  region: string
+  thumbnail?: string
+  flag?: string
 }
+
+const difficultyLevels = ['easy', 'medium', 'hard']
 
 const SingleplayerPage = () => {
   const router = useRouter()
   const [userEmail, setUserEmail] = useState<string | null>(null)
-  const [profile, setProfile] = useState<any>(null) // Add profile state
+  const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-
-  const gameModes: GameMode[] = [
-    {
-      id: 'world',
-      name: 'World Tour',
-      description: 'Random locations from around the globe',
-      region: 'world'
-    },
-    {
-      id: 'asia',
-      name: 'Asian Challenge',
-      description: 'Locations across Asia',
-      region: 'asia'
-    },
-    {
-      id: 'europe',
-      name: 'European Explorer',
-      description: 'Locations throughout Europe',
-      region: 'europe'
-    },
-    {
-      id: 'north-america',
-      name: 'American Roadtrip',
-      description: 'Locations in North America',
-      region: 'north-america'
-    },
-    {
-      id: 'urban',
-      name: 'Urban Landscapes',
-      description: 'Major cities worldwide',
-      region: 'urban'
-    },
-  ]
+  const [countries, setCountries] = useState<Country[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null)
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string>('medium')
 
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       setUserEmail(user?.email || null)
-      
       if (user) {
         const profileData = await getProfile(user.id)
         setProfile(profileData)
       }
-      
       setLoading(false)
     }
-    
+
+    const fetchCountries = async () => {
+      const res = await fetch('/data/countries.json')
+      const json = await res.json()
+      setCountries(json)
+    }
+
     fetchUser()
+    fetchCountries()
   }, [])
+
+  const filteredCountries = countries.filter(c =>
+    c.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+  const handleStart = () => {
+    if (!selectedCountry) return
+    router.push(`/play/singleplayer/${selectedCountry.id}?difficulty=${selectedDifficulty}`)
+  }
 
   if (loading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Singleplayer Mode</h1>
-        <p className="text-gray-400 mb-8">Select a region to test your geography skills</p>
-        
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:w-2/3">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {gameModes.map((mode) => (
-                <div 
-                  key={mode.id}
-                  className="bg-gray-900 rounded-xl overflow-hidden hover:bg-gray-800 transition duration-300 cursor-pointer"
-                  onClick={() => router.push(`/play/singleplayer/${mode.id}`)}
-                >
-                  <div className="p-6">
-                    <h2 className="text-xl font-bold text-emerald-400 mb-2">{mode.name}</h2>
-                    <p className="text-gray-300 mb-4">{mode.description}</p>
-                    <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center">
-                      <div className="bg-gray-700 border-2 border-dashed rounded-xl w-16 h-16" />
-                      <span className="ml-4 text-sm text-gray-400">
-                        {mode.region === 'world' ? '🌎' : 
-                         mode.region === 'asia' ? '🗾' : 
-                         mode.region === 'europe' ? '🏰' : 
-                         mode.region === 'north-america' ? '🗽' : '🏙️'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+    <div className="bg-black text-white min-h-screen pt-16">
+      <NavBar />
+      <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col lg:flex-row gap-6">
+        <div className="lg:w-3/4">
+          <div
+            className={`relative mb-6 cursor-pointer rounded-xl overflow-hidden border-2 ${
+              selectedCountry?.id === 'world' ? 'border-emerald-500' : 'border-transparent'
+            }`}
+            onClick={() => setSelectedCountry({ id: 'world', name: 'World', thumbnail: '/thumbs/world.jpg' })}
+          >
+            <img src="/thumbs/world.jpg" alt="World" className="w-full h-64 object-cover" />
+            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+              <h2 className="text-3xl font-bold text-white">World</h2>
             </div>
           </div>
-          
-          <div className="lg:w-1/3">
-            <div className="bg-gray-900 rounded-xl p-6 sticky top-6">
-              <h2 className="text-xl font-bold mb-6 text-emerald-400">Player Info</h2>
-              
-              <div className="flex items-center mb-6">
-                {profile?.avatar_url ? (
-                  <img 
-                    src={profile.avatar_url} 
-                    alt="Avatar" 
-                    className="rounded-full w-12 h-12 mr-4"
-                  />
-                ) : (
-                  <div className="bg-emerald-600 rounded-full w-12 h-12 flex items-center justify-center mr-4">
-                    <span className="text-lg">
-                      {profile?.display_name?.charAt(0)?.toUpperCase() || 'U'}
-                    </span>
-                  </div>
-                )}
-                <div>
-                  <h3 className="font-semibold">
-                    {profile?.display_name || userEmail?.split('@')[0] || 'Player'}
-                  </h3>
-                  <p className="text-gray-300 text-sm break-all">{userEmail}</p>
-                </div>
+          <input
+            type="text"
+            placeholder="Search for a country"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            className="w-full bg-gray-800 text-white p-3 rounded-lg mb-6"
+          />
+
+          {/* Country Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredCountries.map((country) => (
+              <div
+                key={country.id}
+                className={`bg-gray-900 p-3 rounded-lg cursor-pointer border-2 transition ${
+                  selectedCountry?.id === country.id ? 'border-emerald-500' : 'border-transparent'
+                }`}
+                onClick={() => setSelectedCountry(country)}
+              >
+                <img
+                  // src={country.thumbnail || `https://flagcdn.com/w320/${country.id.toLowerCase()}.png`}
+                  src={`https://flagcdn.com/w320/${country.id.toLowerCase()}.png`}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = `https://flagcdn.com/w320/${country.id.toLowerCase()}.png`
+                  }}
+                  alt={country.name}
+                  className="w-full h-28 object-cover rounded-md mb-2"
+                />
+                <h3 className="text-center text-white font-medium">{country.name}</h3>
               </div>
-              
-              <div className="mt-8">
-                <h3 className="font-semibold mb-3">Recent Scores</h3>
-                <div className="bg-gray-800 rounded-lg p-4">
-                  <p className="text-gray-400 italic">No games played yet</p>
+            ))}
+          </div>
+        </div>
+
+        {/* RIGHT - Info panel (1/4) */}
+        <div className="lg:w-1/4 sticky top-6">
+          <div className="bg-gray-900 p-4 rounded-lg">
+            <h2 className="text-xl font-bold text-emerald-400 mb-4">Player Info</h2>
+            <div className="flex items-center mb-6">
+              {profile?.avatar_url ? (
+                <img src={profile.avatar_url} alt="Avatar" className="rounded-full w-12 h-12 mr-4" />
+              ) : (
+                <div className="bg-emerald-600 rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                  <span className="text-lg">{profile?.display_name?.charAt(0)?.toUpperCase() || 'U'}</span>
                 </div>
-              </div>
-              
-              <div className="mt-8">
-                <h3 className="font-semibold mb-3">Quick Play</h3>
-                <button
-                  onClick={() => router.push(`/play/singleplayer/world`)}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-lg transition duration-300"
-                >
-                  Play Random Location
-                </button>
+              )}
+              <div>
+                <h3 className="font-semibold">
+                  {profile?.display_name || userEmail?.split('@')[0] || 'Player'}
+                </h3>
+                <p className="text-gray-400 text-sm break-all">{userEmail}</p>
               </div>
             </div>
+
+            {selectedCountry && (
+              <>
+                <div className="mb-4">
+                  <img
+                    src={`https://flagcdn.com/w320/${selectedCountry.id.toLowerCase()}.png`}
+                    alt={selectedCountry.name}
+                    className="w-full h-28 object-cover rounded-md mb-2"
+                  />
+                  <h3 className="text-lg font-semibold">{selectedCountry.name}</h3>
+                </div>
+
+                <div className="mb-4">
+                  <h4 className="font-semibold mb-2">Difficulty</h4>
+                  <div className="flex gap-2">
+                    {difficultyLevels.map((level) => (
+                      <button
+                        key={level}
+                        className={`px-3 py-1 rounded-lg text-sm ${
+                          selectedDifficulty === level ? 'bg-emerald-600' : 'bg-gray-800'
+                        }`}
+                        onClick={() => setSelectedDifficulty(level)}
+                      >
+                        {level.charAt(0).toUpperCase() + level.slice(1)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleStart}
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 py-2 rounded-lg transition"
+                >
+                  Start Game
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
