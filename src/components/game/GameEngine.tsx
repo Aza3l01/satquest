@@ -39,7 +39,6 @@ export default function GameEngine({
     fetch('/data/cities.json')
       .then(res => res.json())
       .then((all: City[]) => {
-        // 1) filter by world vs country (use iso2 code)
         const relevant = mode === 'world'
           ? all
           : all.filter(city => city.iso2.toUpperCase() === mode.toUpperCase())
@@ -49,11 +48,9 @@ export default function GameEngine({
           return
         }
 
-        // 2) sort by population descending
         const sorted = [...relevant].sort((a, b) => b.population - a.population)
         const sliceSize = Math.ceil(sorted.length * 0.2)
 
-        // 3) pick bucket
         let pool: City[]
         switch (difficulty) {
           case 'easy':
@@ -67,7 +64,6 @@ export default function GameEngine({
             break
         }
 
-        // 4) initialize game with pool
         setCities(pool)
         selectRandomCity(pool)
       })
@@ -172,6 +168,8 @@ export default function GameEngine({
         <FinalResult
           results={results}
           onRestart={() => window.location.reload()}
+          mode={mode}
+          difficulty={difficulty}
         />
       )}
     </div>
