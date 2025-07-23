@@ -1,10 +1,12 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabaseClient'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { getProfile } from '@/lib/profile'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 export default function NavBar() {
   const [user, setUser] = useState<any>(null)
@@ -43,12 +45,15 @@ export default function NavBar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-black/30 backdrop-blur-lg shadow-md px-6 py-2 flex justify-between items-center h-14 z-50">
-      <Image
-        src="/logo_big.svg"
-        alt="SatQuest Logo"
-        width={120}
-        height={40}
-      />
+      {/* Clickable logo to landing page */}
+      <Link href="/" className="flex items-center">
+        <Image
+          src="/logo_big.svg"
+          alt="SatQuest Logo"
+          width={120}
+          height={40}
+        />
+      </Link>
 
       <div className="flex items-center space-x-6">
         <Link href="/friends" className={getTabClass('/friends')}>
@@ -73,7 +78,6 @@ export default function NavBar() {
           className="text-white font-medium flex items-center" 
           onClick={() => setDropdownOpen(!dropdownOpen)}
         >
-          {/* Avatar with fallback */}
           {profile?.avatar_url ? (
             <img 
               src={profile.avatar_url} 
@@ -87,22 +91,24 @@ export default function NavBar() {
               </span>
             </div>
           )}
-          
-          {/* Display name or email prefix */}
-          <span className="max-w-[120px] truncate">
+
+          <span className="max-w-[120px] truncate flex items-center gap-1">
             {profile?.display_name || user.email?.split('@')[0]}
+            <ChevronDownIcon className="w-4 h-4 text-white opacity-70" />
           </span>
         </button>
-        
+
         {dropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-lg text-black z-50">
-            <Link href="/profile" 
+            <Link
+              href="/profile"
               className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
               onClick={() => setDropdownOpen(false)}
             >
               Profile
             </Link>
-            <Link href="/settings" 
+            <Link
+              href="/settings"
               className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
               onClick={() => setDropdownOpen(false)}
             >
