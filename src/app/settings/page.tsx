@@ -155,7 +155,7 @@ export default function SettingsPage() {
             Privacy
           </h2>
           <p className="text-gray-400">
-            You’ll be able to toggle private profiles here in a future update :)
+            You’ll be able to toggle private profiles and streaming mode here in a future update :)
           </p>
         </section>
 

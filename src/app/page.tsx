@@ -22,9 +22,9 @@ export default function HomePage() {
   return (
     <main
       className={`min-h-screen text-white p-6 flex flex-col items-center ${
-        !loggedIn ? 'bg-cover bg-center bg-no-repeat' : 'bg-black'
+        !loggedIn ? 'bg-cover bg-center bg-no-repeat' : 'bg-contain bg-center'
       }`}
-      style={!loggedIn ? { backgroundImage: "url('/bg.png')" } : {}}
+      style={!loggedIn ? { backgroundImage: "url('/bg.png')" } : { backgroundImage: "url('/bg2.jpg')" }}
     >
       {loggedIn && <NavBar />}
 
