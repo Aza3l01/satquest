@@ -2,15 +2,17 @@
 
 import { useRouter } from 'next/navigation'
 import NavBar from '@/components/web/NavBar'
+import FriendsSlider from '@/components/web/FriendsSlider'
 
 const PlayPage = () => {
   const router = useRouter()
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white bg ">
       <NavBar />
+      <FriendsSlider />
       <main className="p-6 pt-24">
-        
+    
         <div className="max-w-2xl mx-auto bg-gray-900 rounded-xl p-8 shadow-lg">
           <h2 className="text-2xl font-semibold mb-6 text-emerald-300">Select Game Mode</h2>
           

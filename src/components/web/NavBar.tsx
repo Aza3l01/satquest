@@ -37,15 +37,14 @@ export default function NavBar() {
      before:absolute before:inset-0 before:rounded-full before:blur-lg 
      ${
        pathname === path
-         ? 'before:bg-blue-700/30'
-         : 'before:bg-transparent hover:before:bg-blue-700/30'
+         ? 'before:bg-emerald-700/30'
+         : 'before:bg-transparent hover:before:bg-emerald-700/30'
      }`
 
   if (!user) return null
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-black/30 backdrop-blur-lg shadow-md px-6 py-2 flex justify-between items-center h-14 z-50">
-      {/* Clickable logo to landing page */}
       <Link href="/" className="flex items-center">
         <Image
           src="/logo_big.svg"
@@ -99,23 +98,23 @@ export default function NavBar() {
         </button>
 
         {dropdownOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-lg text-black z-50">
+          <div className="absolute right-0 mt-2 w-48 bg-black shadow-md rounded-lg text-white z-50">
             <Link
               href="/profile"
-              className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
+              className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-lg"
               onClick={() => setDropdownOpen(false)}
             >
               Profile
             </Link>
             <Link
               href="/settings"
-              className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
+              className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-lg"
               onClick={() => setDropdownOpen(false)}
             >
               Settings
             </Link>
             <button
-              className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
+              className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-lg"
               onClick={handleLogout}
             >
               Log Out
