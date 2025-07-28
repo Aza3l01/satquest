@@ -9,6 +9,8 @@ import {
   CheckIcon,
   XMarkIcon,
   PlusIcon,
+  UserPlusIcon,
+  UsersIcon,
 } from '@heroicons/react/24/outline'
 
 interface Profile {
@@ -101,10 +103,8 @@ export default function FriendsSlider() {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       className={`
-        fixed top-0 right-0 bottom-0 flex flex-col
-        bg-black/40 backdrop-blur-lg text-white
-        transition-width duration-300 overflow-hidden
-        ${open ? 'w-80' : 'w-16'}
+        fixed top-0 right-0 h-full bg-black/30 backdrop-blur-sm
+        ${open ? 'w-72 pt-16' : 'w-10 pt-16'} transition-[width] duration-200 overflow-hidden overflow-x-hidden z-40
       `}
     >
       {/* Add Friend */}
@@ -112,7 +112,7 @@ export default function FriendsSlider() {
         <input
           value={inputCode}
           onChange={e => setInputCode(e.target.value)}
-          placeholder="Friend UUID"
+          placeholder="Friend Code"
           className={`
             flex-grow px-2 py-1 bg-gray-800 rounded
             text-sm placeholder-gray-500
@@ -131,66 +131,34 @@ export default function FriendsSlider() {
         <div className="text-xs text-center text-emerald-300">{message}</div>
       )}
 
-      <hr className="border-gray-700 my-2" />
-
-      {/* Pending Requests */}
-      <div className="px-2 text-sm font-semibold text-gray-400 text-left">
-        {open ? 'Pending Requests' : 'PR'}
-      </div>
-      <div className="flex-grow overflow-auto p-2 space-y-2">
-        {pending.map(p => (
-          <div key={p.id} className="flex items-center justify-between">
-            <Link href={`/profile/${p.id}`} className="flex items-center gap-2">
-              <img
-                src={p.avatar_url || '/default-avatar.png'}
-                alt=""
-                className="w-6 h-6 rounded-full"
-              />
-              {open && <span className="text-sm">{p.display_name}</span>}
-            </Link>
-            {open && (
-              <div className="flex gap-1">
-                <div className="relative group">
-                  <button onClick={() => accept(p.id)}
-                    className="p-1 rounded-full border border-emerald-600 hover:bg-emerald-600 hover:text-black transition"
-                    title="Accept"
-                  >
-                    <CheckIcon className="w-4 h-4" />
-                  </button>
-                  <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 text-xs bg-gray-800 text-gray-200 px-2 rounded opacity-0 group-hover:opacity-100">
-                    Accept
-                  </span>
-                </div>
-                <div className="relative group">
-                  <button onClick={() => remove(p.id, false)}
-                    className="p-1 rounded-full border border-red-600 hover:bg-red-600 hover:text-black transition"
-                    title="Reject"
-                  >
-                    <XMarkIcon className="w-4 h-4" />
-                  </button>
-                  <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 text-xs bg-gray-800 text-gray-200 px-2 rounded opacity-0 group-hover:opacity-100">
-                    Reject
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-
-        <hr className="border-gray-700 my-2" />
-
-        {/* Friends List */}
-        <div className="px-2 text-sm font-semibold text-gray-400 text-left">
-          {open ? 'Friends' : 'FR'}
+      <div className="flex-grow overflow-auto overflow-x-hidden space-y-2 px-2">
+        {/* Friends section */}
+        <hr className="border-gray-700" />
+        <div className="text-sm font-semibold text-gray-400 text-center">
+          {open ? (
+            <div className="flex items-center justify-center gap-1">
+              <UsersIcon className="w-4 h-4" />
+              <span>Friends</span>
+            </div>
+          ) : (
+            <UsersIcon className="w-4 h-4 mx-auto" />
+          )}
         </div>
+
         {friends.map(f => (
           <div key={f.id} className="flex items-center justify-between">
             <Link href={`/profile/${f.id}`} className="flex items-center gap-2">
-              <img
-                src={f.avatar_url || '/default-avatar.png'}
-                alt=""
-                className="w-6 h-6 rounded-full"
-              />
+              {f.avatar_url ? (
+                <img
+                  src={f.avatar_url}
+                  alt=""
+                  className="w-6 h-6 rounded-full"
+                />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center text-xs font-bold text-black border border-emerald-500">
+                  {f.display_name?.charAt(0)?.toUpperCase() || 'U'}
+                </div>
+              )}
               {open && <span className="text-sm">{f.display_name}</span>}
             </Link>
             {open && (
@@ -215,6 +183,64 @@ export default function FriendsSlider() {
                   </button>
                   <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 text-xs bg-gray-800 text-gray-200 px-2 rounded opacity-0 group-hover:opacity-100">
                     Unfriend
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+
+        {/* Requests section */}
+        <hr className="border-gray-700" />
+        <div className="text-sm font-semibold text-gray-400 text-center">
+          {open ? (
+            <div className="flex items-center justify-center gap-1">
+              <UserPlusIcon className="w-4 h-4" />
+              <span>Requests</span>
+            </div>
+          ) : (
+            <UserPlusIcon className="w-4 h-4 mx-auto" />
+          )}
+        </div>
+
+        {pending.map(p => (
+          <div key={p.id} className="flex items-center justify-between">
+            <Link href={`/profile/${p.id}`} className="flex items-center gap-2">
+              {p.avatar_url ? (
+                <img
+                  src={p.avatar_url}
+                  alt=""
+                  className="w-6 h-6 rounded-full"
+                />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center text-xs font-bold text-black border border-emerald-500">
+                  {p.display_name?.charAt(0)?.toUpperCase() || 'U'}
+                </div>
+              )}
+              {open && <span className="text-sm">{p.display_name}</span>}
+            </Link>
+            {open && (
+              <div className="flex gap-1">
+                <div className="relative group">
+                  <button onClick={() => accept(p.id)}
+                    className="p-1 rounded-full border border-emerald-600 hover:bg-emerald-600 hover:text-black transition"
+                    title="Accept"
+                  >
+                    <CheckIcon className="w-4 h-4" />
+                  </button>
+                  <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 text-xs bg-gray-800 text-gray-200 px-2 rounded opacity-0 group-hover:opacity-100">
+                    Accept
+                  </span>
+                </div>
+                <div className="relative group">
+                  <button onClick={() => remove(p.id, false)}
+                    className="p-1 rounded-full border border-red-600 hover:bg-red-600 hover:text-black transition"
+                    title="Reject"
+                  >
+                    <XMarkIcon className="w-4 h-4" />
+                  </button>
+                  <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 text-xs bg-gray-800 text-gray-200 px-2 rounded opacity-0 group-hover:opacity-100">
+                    Reject
                   </span>
                 </div>
               </div>
