@@ -5,25 +5,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import { getProfile } from '@/lib/profile'
-import {
-  CheckIcon,
-  XMarkIcon,
-  PlusIcon,
-  UserPlusIcon,
-  UsersIcon,
-} from '@heroicons/react/24/outline'
+import { CheckIcon, XMarkIcon, PlusIcon, UserPlusIcon, UsersIcon } from '@heroicons/react/24/outline'
 
 interface Profile {
   id: string
   display_name: string
   avatar_url?: string
-}
-
-interface FriendRecord {
-  user_id: string
-  friend_id: string
-  status: 'pending' | 'accepted' | 'rejected'
-  created_at: string
 }
 
 export default function FriendsSlider() {
@@ -42,7 +29,7 @@ export default function FriendsSlider() {
       setUserId(user.id)
 
       const { data: pendRecs } = await supabase
-        .from<FriendRecord>('friends')
+        .from('friends')
         .select('user_id')
         .eq('friend_id', user.id)
         .eq('status', 'pending')
@@ -52,7 +39,7 @@ export default function FriendsSlider() {
       setPending(pendProfiles.filter(Boolean))
 
       const { data: frRecs } = await supabase
-        .from<FriendRecord>('friends')
+        .from('friends')
         .select('user_id, friend_id')
         .or(`and(user_id.eq.${user.id},status.eq.accepted),and(friend_id.eq.${user.id},status.eq.accepted)`)
       const otherIds = (frRecs || []).map(r =>
