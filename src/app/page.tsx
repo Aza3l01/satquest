@@ -32,7 +32,8 @@ export default function HomePage() {
     >
       {loggedIn && <NavBar />}
 
-      <div className="flex-grow w-full flex flex-col justify-center">
+      <div className={`flex-grow w-full flex flex-col ${!loggedIn ? 'justify-center items-center' : ''}`}>
+
         {loggedIn ? (
           <>
             <FriendsSlider />
