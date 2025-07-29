@@ -44,7 +44,7 @@ export default function NavBar() {
   if (!user) return null
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-black/30 backdrop-blur-lg shadow-md px-6 py-2 flex items-center h-12 z-50">
+    <nav className="fixed top-0 left-0 w-full bg-black/10 backdrop-blur-lg shadow-md px-6 py-2 flex items-center h-12 z-50">
       <div className="flex items-center space-x-6">
         <Link href="/" className="flex items-center">
           <Image
@@ -101,7 +101,7 @@ export default function NavBar() {
       </div>
 
       {dropdownOpen && (
-        <div className="fixed right-6 top-16 w-48 bg-black/30 backdrop-blur-sm shadow-md rounded-lg text-white z-[9999]">
+        <div className="fixed right-6 top-16 w-48 bg-black/10 backdrop-blur-sm shadow-md rounded-lg text-white z-[9999]">
           <Link
             href="/profile"
             className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-lg"
