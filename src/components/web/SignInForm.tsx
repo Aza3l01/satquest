@@ -18,7 +18,7 @@ export default function SignInForm() {
   const handleLogin = async () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) setMessage(error.message)
-    else router.push('/play')
+    else router.push('/')
   }
 
   const handleForgotPassword = async () => {
