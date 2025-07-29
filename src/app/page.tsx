@@ -41,8 +41,13 @@ export default function HomePage() {
               {/* Left: Announcements */}
               <div className="flex-1 flex flex-col justify-center">
                 <h2 className="text-2xl font-normal text-center mb-4">Announcements</h2>
-                <ul className="list-disc list-inside text-left text-white/90 text-sm space-y-2 max-w-md mx-auto">
-                  <p>Welcome! SatQuest is very early in its development, so most features are under development. <br></br>Feel free to play around with singleplayer for now. More modes like multiplayer will be added in the future. Please report bugs on Discord or through any of the social links found in the footer. If you would like to support me, feel free to donate on Ko-fi. Donors will be given pro features when they go live! :)</p>
+                <ul className="list-disc list-inside text-justify text-white/90 text-sm space-y-2 max-w-md mx-auto">
+                  <p>
+                    Welcome! SatQuest is very early in its development, so most features are under development.
+                    Feel free to play around with singleplayer for now. More modes like multiplayer will be added in the future.
+                    Please report bugs on Discord or through any of the social links found in the footer. If you would like to
+                    support me, feel free to donate on Ko-fi. Donors will be given pro features when they go live! :)
+                  </p>
                   {/* <li>Multiplayer and tournaments are in development.</li>
                   <li>Report bugs or give feedback on Discord.</li> */}
                 </ul>
@@ -64,8 +69,8 @@ export default function HomePage() {
             </div>
           </>
         ) : (
-          <>
-            <div className="text-center mb-10 max-w-2xl mx-auto">
+          <div className="flex flex-1 flex-col justify-center items-center text-center px-6">
+            <div className="mb-10 max-w-2xl mx-auto">
               <img src="/logo_big.svg" alt="SatQuest Logo" className="h-20 mx-auto mb-4" />
               <h2 className="text-3xl font-bold mt-2">Explore From Above!</h2>
               <p className="text-md text-gray-200 mt-2">
@@ -73,7 +78,7 @@ export default function HomePage() {
               </p>
             </div>
             <SignUpForm />
-          </>
+          </div>
         )}
       </div>
 
