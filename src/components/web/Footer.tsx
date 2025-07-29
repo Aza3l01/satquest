@@ -56,7 +56,7 @@ export default function SiteFooter() {
                 className="opacity-80 hover:opacity-100 transition"
               />
             </Link>
-            <Link href="https://youtube.com" target="_blank">
+            <Link href="https://www.youtube.com/@satquestgame" target="_blank">
               <Image
                 src="/icons/youtube.svg"
                 alt="YouTube"
