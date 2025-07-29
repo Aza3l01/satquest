@@ -26,7 +26,7 @@ export default function SignUpForm() {
   }
 
   return (
-    <div className="p-6 bg-white/20 backdrop-blur-md rounded max-w-md w-full text-white shadow-lg">
+    <div className="p-6 bg-black/10 backdrop-blur-md rounded max-w-md w-full text-white shadow-lg">
       <h2 className="text-xl font-bold mb-4 text-center">Sign Up To Play!</h2>
 
       <button
