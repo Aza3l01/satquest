@@ -29,7 +29,7 @@ export default function SiteFooter() {
           </a>
 
           <div className="flex items-center gap-3">
-            <Link href="https://discord.com" target="_blank">
+            <Link href="https://discord.gg/2bQU7xAdnP" target="_blank">
               <Image
                 src="/icons/discord.svg"
                 alt="Discord"
@@ -38,7 +38,7 @@ export default function SiteFooter() {
                 className="opacity-80 hover:opacity-100 transition"
               />
             </Link>
-            <Link href="https://reddit.com" target="_blank">
+            <Link href="https://www.reddit.com/r/satquestgame/" target="_blank">
               <Image
                 src="/icons/reddit.svg"
                 alt="Reddit"
@@ -47,7 +47,7 @@ export default function SiteFooter() {
                 className="opacity-80 hover:opacity-100 transition"
               />
             </Link>
-            <Link href="https://instagram.com" target="_blank">
+            <Link href="https://www.instagram.com/satquestgame/" target="_blank">
               <Image
                 src="/icons/instagram.svg"
                 alt="Instagram"
@@ -65,7 +65,7 @@ export default function SiteFooter() {
                 className="opacity-80 hover:opacity-100 transition"
               />
             </Link>
-            <Link href="https://bsky.app" target="_blank">
+            <Link href="https://bsky.app/profile/satquestgame.bsky.social" target="_blank">
               <Image
                 src="/icons/bluesky.svg"
                 alt="Bluesky"
@@ -74,7 +74,7 @@ export default function SiteFooter() {
                 className="opacity-80 hover:opacity-100 transition"
               />
             </Link>
-            <Link href="https://twitter.com" target="_blank">
+            <Link href="https://x.com/satquestgame" target="_blank">
               <Image
                 src="/icons/twitter.svg"
                 alt="Twitter"
