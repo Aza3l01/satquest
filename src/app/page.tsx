@@ -7,6 +7,7 @@ import NavBar from '@/components/web/NavBar'
 import { useRouter } from 'next/navigation'
 import FriendsSlider from '@/components/web/FriendsSlider'
 import SiteFooter from '@/components/web/Footer'
+import { MapPinIcon } from '@heroicons/react/24/solid'
 
 export default function HomePage() {
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null)
@@ -24,31 +25,47 @@ export default function HomePage() {
 
   return (
     <main
-className={`min-h-screen text-white p-6 flex flex-col items-center ${
-    !loggedIn ? 'bg-fixed bg-center bg-no-repeat bg-cover' : 'bg-fit bg-center'
-  }`}
+      className={`min-h-screen text-white px-6 py-4 flex flex-col ${
+        !loggedIn ? 'bg-fixed bg-center bg-no-repeat bg-cover' : 'bg-fit bg-center'
+      }`}
       style={!loggedIn ? { backgroundImage: "url('/bg.png')" } : { backgroundImage: "url('/bg2.jpg')" }}
     >
       {loggedIn && <NavBar />}
 
-      <div className="flex-grow flex flex-col items-center w-full">
+      <div className="flex-grow w-full flex flex-col justify-center">
         {loggedIn ? (
-          <div className="text-center mt-10">
+          <>
             <FriendsSlider />
-            <h1 className="text-3xl font-bold mb-4">You are signed in</h1>
-            <p>
-              Right side premium info, left side big play button saying "Play casual games for free" or something like that
-            </p>
-            <button
-              onClick={() => router.push('/play')}
-              className="bg-emerald-700 hover:bg-emerald-600 text-white px-6 py-2 rounded"
-            >
-              Go to Play
-            </button>
-          </div>
+
+            <div className="flex flex-col md:flex-row justify-between items-center h-full px-4 mt-10 gap-12">
+              {/* Left: Announcements */}
+              <div className="flex-1 flex flex-col justify-center">
+                <h2 className="text-2xl font-normal text-center mb-4">Announcements</h2>
+                <ul className="list-disc list-inside text-justify text-white/90 text-sm space-y-2 max-w-md mx-auto">
+                  <p>Welcome! SatQuest is very early in its development, so most features are under development. Feel free to play around with singleplayer for now. More modes like multiplayer will be added in the future. Please report bugs on Discord or through any of the social links found in the footer. If you would like to support me, feel free to donate on Ko-fi. Donors will be given pro features when they go live! :)</p>
+                  {/* <li>Multiplayer and tournaments are in development.</li>
+                  <li>Report bugs or give feedback on Discord.</li> */}
+                </ul>
+              </div>
+
+              {/* Right: Play Section */}
+              <div className="flex-1 flex flex-col items-center justify-center text-center">
+                <MapPinIcon className="w-10 h-10 text-emerald-500 mb-4" />
+                <h2 className="text-3xl font-extrabold mb-4 drop-shadow-lg leading-tight">
+                  Start Playing<br />Games Now!
+                </h2>
+                <button
+                  onClick={() => router.push('/play')}
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white text-lg font-bold px-8 py-3 rounded-xl transition-all duration-300"
+                >
+                  Play
+                </button>
+              </div>
+            </div>
+          </>
         ) : (
           <>
-            <div className="text-center mb-10 max-w-2xl">
+            <div className="text-center mb-10 max-w-2xl mx-auto">
               <img src="/logo_big.svg" alt="SatQuest Logo" className="h-20 mx-auto mb-4" />
               <h2 className="text-3xl font-bold mt-2">Explore From Above!</h2>
               <p className="text-md text-gray-200 mt-2">
@@ -59,6 +76,7 @@ className={`min-h-screen text-white p-6 flex flex-col items-center ${
           </>
         )}
       </div>
+
       <SiteFooter />
     </main>
   )
