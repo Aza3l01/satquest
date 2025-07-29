@@ -90,7 +90,7 @@ export default function FriendsSlider() {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       className={`
-        fixed top-0 right-0 h-full bg-black/30 backdrop-blur-sm
+        fixed top-0 right-0 h-full bg-black/10 backdrop-blur-sm
         ${open ? 'w-72 pt-16' : 'w-10 pt-16'} transition-[width] duration-200 overflow-hidden overflow-x-hidden z-40
       `}
     >
