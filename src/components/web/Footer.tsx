@@ -96,11 +96,11 @@ export default function SiteFooter() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Link href="/privacy" className="text-emerald-600 underline">
+          <Link href="/legal/privacy" className="text-emerald-600 underline">
             Privacy
           </Link>
           <span className="text-gray-300">|</span>
-          <Link href="/terms" className="text-emerald-600 underline">
+          <Link href="/legal/terms" className="text-emerald-600 underline">
             Terms
           </Link>
           <span className="text-white text-xs">v0.1.0</span>
