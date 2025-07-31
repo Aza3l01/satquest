@@ -1,66 +1,129 @@
 'use client'
 
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import NavBar from '@/components/web/NavBar'
 import FriendsSlider from '@/components/web/FriendsSlider'
+import SiteFooter from '@/components/web/Footer'
 
-const PlayPage = () => {
+const modes = [
+  {
+    id: 'singleplayer',
+    label: 'Singleplayer',
+    description: 'Play solo and guess cities from satellite images.',
+    announcement:
+      'You can now play singleplayer! Test your knowledge of the world by guessing cities from above. More maps and features coming soon.',
+    route: '/play/singleplayer',
+    enabled: true,
+  },
+  {
+    id: 'multiplayer',
+    label: 'Multiplayer',
+    description: 'Play casual or ranked matches with others (coming soon).',
+    announcement:
+      'Multiplayer is under development. Soon you’ll be able to join casual and ranked matches to compete with friends and strangers.',
+    route: null,
+    enabled: false,
+  },
+  {
+    id: 'party',
+    label: 'Party Mode',
+    description: 'Host party games with friends (coming soon).',
+    announcement:
+      'Party mode will let you create rooms and play live with your friends. (In development)',
+    route: null,
+    enabled: false,
+  },
+  {
+    id: 'tournament',
+    label: 'Tournaments',
+    description: 'Compete in official events for glory (coming soon).',
+    announcement:
+      'Battle Royale style. (In development)',
+    route: null,
+    enabled: false,
+  },
+]
+
+export default function PlayPage() {
+  const [selectedMode, setSelectedMode] = useState('singleplayer')
   const router = useRouter()
 
+  const current = modes.find((m) => m.id === selectedMode)
+
   return (
-    <div className="min-h-screen bg-black text-white bg ">
+    <div
+      className="min-h-screen bg-cover bg-center text-white flex flex-col"
+      style={{ backgroundImage: "url('/bg2.jpg')" }}
+    >
       <NavBar />
       <FriendsSlider />
-      <main className="p-6 pt-24">
-    
-        <div className="max-w-2xl mx-auto bg-gray-900 rounded-xl p-8 shadow-lg">
-          <h2 className="text-2xl font-semibold mb-6 text-emerald-300">Not complete</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <button
-              onClick={() => router.push('/play/singleplayer')}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white py-4 px-6 rounded-lg transition duration-300 flex flex-col items-center"
-            >
-              <span className="text-xl font-bold">Singleplayer</span>
-              <span className="text-sm mt-2 text-gray-300">solo</span>
-            </button>
 
-            <button
-              className="bg-gray-800 text-gray-400 py-4 px-6 rounded-lg cursor-not-allowed flex flex-col items-center"
-              disabled
-            >
-              <span className="text-xl font-bold">Multiplayer</span>
-              <span className="text-sm mt-2">In development</span>
-            </button>
-
-            <button
-              className="bg-gray-800 text-gray-400 py-4 px-6 rounded-lg cursor-not-allowed flex flex-col items-center"
-              disabled
-            >
-              <span className="text-xl font-bold">Party Mode</span>
-              <span className="text-sm mt-2">In development</span>
-            </button>
-
-            <button
-              className="bg-gray-800 text-gray-400 py-4 px-6 rounded-lg cursor-not-allowed flex flex-col items-center"
-              disabled
-            >
-              <span className="text-xl font-bold">Tournaments</span>
-              <span className="text-sm mt-2">In development</span>
-            </button>
+      <div className="flex justify-center pt-24 px-6">
+        <div className="flex flex-col w-full max-w-3xl border-b border-white/30">
+          <div className="flex justify-center space-x-24 text-lg mb-1">
+            {modes.map((mode) => (
+              <button
+                key={mode.id}
+                onClick={() => setSelectedMode(mode.id)}
+                className={`pb-2 transition ${
+                  selectedMode === mode.id
+                    ? 'font-bold text-white'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                {mode.label}
+              </button>
+            ))}
           </div>
 
-          <div className="mt-12 pt-6 border-t border-gray-800">
-            <h3 className="text-xl font-semibold mb-4">Announcements</h3>
-            <div className="bg-gray-800 p-4 rounded-lg">
-              <p className="text-emerald-400">🎉 New locations blah blah</p>
-              <p className="mt-2 text-gray-300">blah blah</p>
-            </div>
+          <div className="relative h-[2px] bg-white/20 w-full">
+            <div
+              className="absolute h-[3px] bg-white transition-all duration-300"
+              style={{
+                width: `${100 / modes.length}%`,
+                left: `${(100 / modes.length) * modes.findIndex((m) => m.id === selectedMode)}%`,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <main className="flex-grow flex items-center justify-center px-6">
+        <div className="flex flex-col md:flex-row w-full max-w-5xl justify-between items-center gap-12">
+          {/* Left: Announcement */}
+          <div className="w-full md:w-1/2">
+            <h2 className="text-xl font-semibold text-center mb-4">Announcements</h2>
+            <p className="text-white/90 text-sm leading-relaxed text-left max-w-md mx-auto">
+              {current?.announcement}
+            </p>
+          </div>
+
+          <div className="w-full md:w-1/2 flex flex-col items-center justify-center text-center">
+            <h2 className="text-2xl font-bold mb-4">{current?.label}</h2>
+            <p className="text-white/80 text-sm mb-6 max-w-sm">{current?.description}</p>
+            {current?.enabled ? (
+              <button
+                onClick={() => router.push(current.route!)}
+                className="bg-emerald-600 hover:bg-emerald-500 text-white text-md font-semibold px-6 py-3 rounded-lg transition"
+              >
+                Go to {current.label}
+              </button>
+            ) : (
+              <button
+                disabled
+                className="bg-gray-700 text-white/40 text-md font-semibold px-6 py-3 rounded-lg cursor-not-allowed"
+              >
+                Coming Soon
+              </button>
+            )}
           </div>
         </div>
       </main>
+
+      <div className="px-6 pb-6 pt-2">
+        <SiteFooter />
+      </div>
     </div>
   )
 }
-
-export default PlayPage
