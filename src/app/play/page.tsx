@@ -121,7 +121,7 @@ export default function PlayPage() {
         </div>
       </main>
 
-      <div className="px-6 pb-6 pt-2">
+      <div className="px-6 pb-4 pt-2">
         <SiteFooter />
       </div>
     </div>
