@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import { getProfile } from '@/lib/profile'
 import NavBar from '@/components/web/NavBar'
+import SiteFooter from '@/components/web/Footer'
+import FriendsSlider from '@/components/web/FriendsSlider'
+import { ChevronUpIcon } from '@heroicons/react/24/solid'
 
 type Country = {
   id: string
@@ -24,6 +27,7 @@ const SingleplayerPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null)
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('medium')
+  const [showBackToTop, setShowBackToTop] = useState(false)
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -44,14 +48,26 @@ const SingleplayerPage = () => {
 
     fetchUser()
     fetchCountries()
+
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const filteredCountries = countries.filter(c =>
     c.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
   const handleStart = () => {
     if (!selectedCountry) return
     router.push(`/play/singleplayer/${selectedCountry.id}?difficulty=${selectedDifficulty}`)
+  }
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   if (loading) {
@@ -63,27 +79,33 @@ const SingleplayerPage = () => {
   }
 
   return (
-    <div className="bg-black text-white min-h-screen pt-16">
+    <main
+      className="min-h-screen text-white px-6 py-4 flex flex-col bg-fixed bg-center bg-no-repeat bg-cover"
+      style={{ backgroundImage: "url('/bg2.jpg')" }}
+    >
       <NavBar />
-      <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col lg:flex-row gap-6">
+      <FriendsSlider />
+
+      <div className="max-w-6xl mx-auto w-full pt-24 pb-8 flex flex-col lg:flex-row gap-8 flex-grow">
         <div className="lg:w-3/4">
           <div
             className={`relative mb-6 cursor-pointer rounded-xl overflow-hidden border-2 ${
               selectedCountry?.id === 'world' ? 'border-emerald-500' : 'border-transparent'
             }`}
-            onClick={() => setSelectedCountry({ id: 'world', name: 'World', thumbnail: '/thumbs/world.jpg' })}
+            onClick={() => setSelectedCountry({ id: 'world', name: 'World', thumbnail: '/world.jpg' })}
           >
             <img src="/thumbs/world.jpg" alt="World" className="w-full h-64 object-cover" />
             <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
               <h2 className="text-3xl font-bold text-white">World</h2>
             </div>
           </div>
+
           <input
             type="text"
             placeholder="Search for a country"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="w-full bg-gray-800 text-white p-3 rounded-lg mb-6"
+            className="w-full bg-black/10 backdrop-blur-md text-white p-3 rounded-lg mb-6"
           />
 
           {/* Country Grid */}
@@ -97,8 +119,7 @@ const SingleplayerPage = () => {
                 onClick={() => setSelectedCountry(country)}
               >
                 <img
-                  // src={country.thumbnail || `https://flagcdn.com/w320/${country.id.toLowerCase()}.png`}
-                  src={`https://flagcdn.com/w320/${country.id.toLowerCase()}.png`}
+                  src={`/thumbs/${country.id}.png`}
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = `https://flagcdn.com/w320/${country.id.toLowerCase()}.png`
                   }}
@@ -111,8 +132,7 @@ const SingleplayerPage = () => {
           </div>
         </div>
 
-        {/* RIGHT - Info panel (1/4) */}
-        <div className="lg:w-1/4 sticky top-6">
+        <div className="lg:w-1/4 sticky top-24">
           <div className="bg-gray-900 p-4 rounded-lg">
             <h2 className="text-xl font-bold text-emerald-400 mb-4">Player Info</h2>
             <div className="flex items-center mb-6">
@@ -135,7 +155,10 @@ const SingleplayerPage = () => {
               <>
                 <div className="mb-4">
                   <img
-                    src={`https://flagcdn.com/w320/${selectedCountry.id.toLowerCase()}.png`}
+                    src={`/thumbs/${selectedCountry.id}.png`}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = `https://flagcdn.com/w320/${selectedCountry.id.toLowerCase()}.png`
+                    }}
                     alt={selectedCountry.name}
                     className="w-full h-28 object-cover rounded-md mb-2"
                   />
@@ -170,7 +193,18 @@ const SingleplayerPage = () => {
           </div>
         </div>
       </div>
-    </div>
+
+      {showBackToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-full shadow-lg z-50 transition"
+        >
+          <ChevronUpIcon className="h-6 w-6" />
+        </button>
+      )}
+
+      <SiteFooter />
+    </main>
   )
 }
 
