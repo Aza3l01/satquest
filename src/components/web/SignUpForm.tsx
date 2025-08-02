@@ -17,7 +17,7 @@ export default function SignUpForm() {
 
     const { error } = await supabase.auth.signUp({ email, password })
     if (error) setMessage(error.message)
-    else setMessage('Check your email to confirm your account.')
+    else setMessage('Check your email to confirm your account :)')
   }
 
   const handleOAuthLogin = async (provider: 'google' | 'discord') => {
