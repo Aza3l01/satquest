@@ -25,11 +25,11 @@ export default function SatelliteMap({ lat, lon }: { lat: number; lon: number })
         keyboard: false
       });
       
-      L.tileLayer('https://sierramaps.ftp.sh/tiles/{x}/{y}/{z}?layer=s', {
+      L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`, {
         maxZoom: 19,
         tileSize: 256,
         crossOrigin: true,
-        detectRetina: false
+        detectRetina: true
       }).addTo(mapRef.current);
     } else {
       mapRef.current.setView(position, 14);

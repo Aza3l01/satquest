@@ -30,16 +30,30 @@ export default function GuessMap({
         attributionControl: false
       });
       
+      // tileLayerRef.current = L.tileLayer(
+      //   'https://sierramaps.ftp.sh/tiles/{x}/{y}/{z}?layer=m', 
+      //   {
+      //     maxZoom: 19,
+      //     tileSize: 256,
+      //     detectRetina: false,
+      //     attribution: '© AQUILA Maps',
+      //     updateWhenIdle: false,
+      //     updateInterval: 200,
+      //     keepBuffer: 10
+      //   }
+      // ).addTo(mapInstance);
+
       tileLayerRef.current = L.tileLayer(
-        'https://sierramaps.ftp.sh/tiles/{x}/{y}/{z}?layer=m', 
+        `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`,
         {
           maxZoom: 19,
           tileSize: 256,
-          detectRetina: false,
-          attribution: '© AQUILA Maps',
-          updateWhenIdle: false,
-          updateInterval: 200,
-          keepBuffer: 10
+          detectRetina: true,
+          attribution: '© Mapbox',
+          // Remove non-standard options:
+          // updateWhenIdle: false,
+          // updateInterval: 200,
+          // keepBuffer: 10
         }
       ).addTo(mapInstance);
       
