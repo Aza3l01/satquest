@@ -12,8 +12,6 @@ import { ChevronUpIcon } from '@heroicons/react/24/solid'
 type Country = {
   id: string
   name: string
-  thumbnail?: string
-  flag?: string
 }
 
 const difficultyLevels = ['easy', 'medium', 'hard']
@@ -88,11 +86,12 @@ const SingleplayerPage = () => {
 
       <div className="max-w-6xl mx-auto w-full pt-24 pb-8 flex flex-col lg:flex-row gap-8 flex-grow">
         <div className="lg:w-3/4">
+          {/* World option */}
           <div
             className={`relative mb-6 cursor-pointer rounded-xl overflow-hidden border-2 ${
               selectedCountry?.id === 'world' ? 'border-emerald-500' : 'border-transparent'
             }`}
-            onClick={() => setSelectedCountry({ id: 'world', name: 'World', thumbnail: '/world.jpg' })}
+            onClick={() => setSelectedCountry({ id: 'world', name: 'World' })}
           >
             <img src="/thumbs/world.jpg" alt="World" className="w-full h-64 object-cover" />
             <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
@@ -100,6 +99,7 @@ const SingleplayerPage = () => {
             </div>
           </div>
 
+          {/* Country Search */}
           <input
             type="text"
             placeholder="Search for a country"
@@ -119,10 +119,7 @@ const SingleplayerPage = () => {
                 onClick={() => setSelectedCountry(country)}
               >
                 <img
-                  src={`/thumbs/${country.id}.png`}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = `https://flagcdn.com/w320/${country.id.toLowerCase()}.png`
-                  }}
+                  src={`https://flagcdn.com/w320/${country.id.toLowerCase()}.png`}
                   alt={country.name}
                   className="w-full h-28 object-cover rounded-md mb-2"
                 />
@@ -132,6 +129,7 @@ const SingleplayerPage = () => {
           </div>
         </div>
 
+        {/* Right Info Panel */}
         <div className="lg:w-1/4 sticky top-24">
           <div className="bg-gray-900 p-4 rounded-lg">
             <h2 className="text-xl font-bold text-emerald-400 mb-4">Player Info</h2>
@@ -154,14 +152,19 @@ const SingleplayerPage = () => {
             {selectedCountry && (
               <>
                 <div className="mb-4">
-                  <img
-                    src={`/thumbs/${selectedCountry.id}.png`}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://flagcdn.com/w320/${selectedCountry.id.toLowerCase()}.png`
-                    }}
-                    alt={selectedCountry.name}
-                    className="w-full h-28 object-cover rounded-md mb-2"
-                  />
+                  {selectedCountry.id === 'world' ? (
+                    <img
+                      src="/thumbs/world.jpg"
+                      alt="World"
+                      className="w-full h-28 object-cover rounded-md mb-2"
+                    />
+                  ) : (
+                    <img
+                      src={`https://flagcdn.com/w320/${selectedCountry.id.toLowerCase()}.png`}
+                      alt={selectedCountry.name}
+                      className="w-full h-28 object-cover rounded-md mb-2"
+                    />
+                  )}
                   <h3 className="text-lg font-semibold">{selectedCountry.name}</h3>
                 </div>
 
