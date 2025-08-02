@@ -86,16 +86,15 @@ const SingleplayerPage = () => {
 
       <div className="max-w-6xl mx-auto w-full pt-24 pb-8 flex flex-col lg:flex-row gap-8 flex-grow">
         <div className="lg:w-3/4">
-          {/* World option */}
           <div
             className={`relative mb-6 cursor-pointer rounded-xl overflow-hidden border-2 ${
               selectedCountry?.id === 'world' ? 'border-emerald-500' : 'border-transparent'
             }`}
             onClick={() => setSelectedCountry({ id: 'world', name: 'World' })}
           >
-            <img src="/thumbs/world.jpg" alt="World" className="w-full h-64 object-cover" />
-            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-              <h2 className="text-3xl font-bold text-white">World</h2>
+            <img src="/thumbs/world.jpg" alt="World" className="w-full h-100 object-cover" />
+            <div className="absolute inset-0 flex items-center justify-start px-40">
+              <h2 className="text-3xl font-bold text-white">Play The <br /> World!</h2>
             </div>
           </div>
 
@@ -129,7 +128,6 @@ const SingleplayerPage = () => {
           </div>
         </div>
 
-        {/* Right Info Panel */}
         <div className="lg:w-1/4 sticky top-24">
           <div className="bg-gray-900 p-4 rounded-lg">
             <h2 className="text-xl font-bold text-emerald-400 mb-4">Player Info</h2>
