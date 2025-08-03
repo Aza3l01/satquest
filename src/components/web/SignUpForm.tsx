@@ -3,6 +3,9 @@ import { useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
 
+// React Icons
+import { FaGoogle, FaDiscord, FaGithub, FaTwitch, FaTwitter, FaSpotify } from 'react-icons/fa'
+
 export default function SignUpForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -20,29 +23,57 @@ export default function SignUpForm() {
     else setMessage('Check your email to confirm your account :)')
   }
 
-  const handleOAuthLogin = async (provider: 'google' | 'discord') => {
+  const handleOAuthLogin = async (
+    provider: 'google' | 'discord' | 'github' | 'twitch' | 'twitter' | 'spotify'
+  ) => {
     const { error } = await supabase.auth.signInWithOAuth({ provider })
     if (error) setMessage(error.message)
   }
 
   return (
     <div className="p-6 bg-black/10 backdrop-blur-md rounded max-w-md w-full text-white shadow-lg">
-      <h2 className="text-xl font-bold mb-4 text-center">Sign Up To Play!</h2>
+      <h2 className="text-xl font-bold mb-4 text-center">Sign Up To Play For Free!</h2>
 
-      <button
-        onClick={() => handleOAuthLogin('google')}
-        className="w-full mb-2 p-2 rounded bg-gray-800 text-white hover:bg-gray-700"
-      >
-        Continue with Google
-      </button>
-      <button
-        onClick={() => handleOAuthLogin('discord')}
-        className="w-full mb-4 p-2 rounded bg-gray-800 text-white hover:bg-gray-700"
-      >
-        Continue with Discord
-      </button>
+      <div className="grid grid-cols-3 gap-4 mb-4">
+        <button
+          onClick={() => handleOAuthLogin('google')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaGoogle className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => handleOAuthLogin('discord')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaDiscord className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => handleOAuthLogin('github')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaGithub className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => handleOAuthLogin('twitch')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaTwitch className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => handleOAuthLogin('twitter')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaTwitter className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => handleOAuthLogin('spotify')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaSpotify className="h-6 w-6" />
+        </button>
+      </div>
 
-      <div className="border-t border-gray-500 my-4"></div>
+      <div className="border-t border-gray-500 my-4" />
 
       <input
         className="w-full mb-2 p-2 rounded bg-black/20 text-white border"

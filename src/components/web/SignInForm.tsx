@@ -1,7 +1,11 @@
 'use client'
+
 import { useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
+
+// Icons
+import { FaGoogle, FaDiscord, FaGithub, FaTwitch, FaTwitter, FaSpotify } from 'react-icons/fa'
 
 export default function SignInForm() {
   const [email, setEmail] = useState('')
@@ -10,7 +14,9 @@ export default function SignInForm() {
   const [isResetting, setIsResetting] = useState(false)
   const router = useRouter()
 
-  const handleOAuthLogin = async (provider: 'google' | 'discord') => {
+  const handleOAuthLogin = async (
+    provider: 'google' | 'discord' | 'github' | 'twitch' | 'twitter' | 'spotify'
+  ) => {
     const { error } = await supabase.auth.signInWithOAuth({ provider })
     if (error) setMessage(error.message)
   }
@@ -30,23 +36,49 @@ export default function SignInForm() {
   }
 
   return (
-    <div className="p-6 bg-white/20 backdrop-blur-md rounded max-w-md w-full">
-      <h2 className="text-white text-xl font-bold mb-4 text-center">Sign In</h2>
+    <div className="p-6 bg-white/20 backdrop-blur-md rounded max-w-md w-full text-white shadow-lg">
+      <h2 className="text-xl font-bold mb-4 text-center">Welcome Back!</h2>
 
-      <button
-        onClick={() => handleOAuthLogin('google')}
-        className="w-full mb-2 p-2 rounded bg-gray-800 text-white hover:bg-gray-700"
-      >
-        Continue with Google
-      </button>
-      <button
-        onClick={() => handleOAuthLogin('discord')}
-        className="w-full mb-4 p-2 rounded bg-gray-800 text-white hover:bg-gray-700"
-      >
-        Continue with Discord
-      </button>
+      <div className="grid grid-cols-3 gap-4 mb-4">
+        <button
+          onClick={() => handleOAuthLogin('google')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaGoogle className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => handleOAuthLogin('discord')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaDiscord className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => handleOAuthLogin('github')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaGithub className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => handleOAuthLogin('twitch')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaTwitch className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => handleOAuthLogin('twitter')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaTwitter className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => handleOAuthLogin('spotify')}
+          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+        >
+          <FaSpotify className="h-6 w-6" />
+        </button>
+      </div>
 
-      <div className="border-t border-gray-500 mb-4"></div>
+      <div className="border-t border-gray-500 mb-4" />
 
       <input
         className="w-full mb-2 p-2 rounded bg-black/20 text-white border"
@@ -55,6 +87,7 @@ export default function SignInForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
+
       {!isResetting && (
         <input
           className="w-full mb-2 p-2 rounded bg-black/20 text-white border"
@@ -90,7 +123,7 @@ export default function SignInForm() {
       )}
 
       <p className="text-xs text-white mt-4 text-center">
-        Don’t have an account?{' '}
+        Don&apos;t have an account?{' '}
         <a href="/" className="text-emerald-400 underline">Sign up</a>
       </p>
 
