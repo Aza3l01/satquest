@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SatQuest",
-  description: "SatQuest is a geography guessing game that tests your ability to recognize locations from satellite images.",
+  title: "SatQuest: Guess cities from satellite and terrain data!",
+  description: "SatQuest is a geography guessing game that tests your ability to recognize locations from satellite images and terrain data.",
 };
 
 export default function RootLayout({
