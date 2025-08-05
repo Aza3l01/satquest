@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
+import SiteFooter from '@/components/web/Footer'
 
 interface FinalResultProps {
   results: any[]
@@ -62,25 +63,25 @@ export default function FinalResult({
   }, [results, mode, difficulty, totalScore, avgAccuracy, totalTimePlayed])
 
   return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-8 max-w-3xl w-full mx-4">
+    <div className="bg-[url('/bg2.jpg')] fixed inset-0 flex items-center justify-center z-50">
+      <div className="bg-black/10 backdrop-round-lg rounded-xl p-8 max-w-3xl w-full mx-4">
         <h2 className="text-3xl font-bold mb-6 text-center">Game Complete!</h2>
 
         <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="bg-blue-50 p-4 rounded-lg text-center">
-            <p className="text-black">Total Score</p>
+          <div className="bg-black/10 p-4 rounded-lg text-center">
+            <p className="text-white">Total Score</p>
             <p className="text-3xl font-bold">{totalScore}</p>
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-lg text-center">
-            <p className="text-black">Avg Accuracy</p>
+          <div className="bg-black/10 p-4 rounded-lg text-center">
+            <p className="text-white">Avg Accuracy</p>
             <p className="text-3xl font-bold text-green-600">
               {avgAccuracy.toFixed(2)}%
             </p>
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-lg text-center">
-            <p className="text-black">Total Distance</p>
+          <div className="bg-black/10 p-4 rounded-lg text-center">
+            <p className="text-white">Total Distance</p>
             <p className="text-3xl font-bold">{totalDistance.toFixed(2)} km</p>
           </div>
         </div>
