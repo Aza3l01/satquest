@@ -6,6 +6,8 @@ import { getProfile } from '@/lib/profile'
 import { useRouter } from 'next/navigation'
 import { ClipboardDocumentIcon } from '@heroicons/react/24/outline'
 import NavBar from '@/components/web/NavBar'
+import FriendsSlider from '@/components/web/FriendsSlider'
+import SiteFooter from '@/components/web/Footer'
 
 interface SingleplayerGame {
   id: string
@@ -21,7 +23,7 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null)
   const [games, setGames] = useState<SingleplayerGame[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'singleplayer' | 'multiplayer' | 'tournaments'>('singleplayer')
+  const [activeTab, setActiveTab] = useState<'singleplayer' | 'multiplayer' | 'tournament'>('singleplayer')
   const [copied, setCopied] = useState(false)
   const router = useRouter()
 
@@ -73,8 +75,13 @@ export default function ProfilePage() {
   const bestAccuracy = Math.max(...games.map((g) => g.avg_accuracy), 0)
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div
+      className="min-h-screen text-white"
+      style={{ backgroundImage: "url('/bg2.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
       <NavBar />
+      <FriendsSlider />
+
       <div className="max-w-5xl mx-auto px-6 pt-24 pb-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8">
@@ -99,7 +106,7 @@ export default function ProfilePage() {
             <p className="text-gray-400 mb-4">{user.email}</p>
 
             <p className="text-gray-400 mb-1">Friend Code</p>
-            <div className="relative bg-gray-800 rounded-lg p-3 pr-12 border border-gray-700 text-sm font-mono text-gray-300">
+            <div className="relative bg-black/10 rounded-lg p-3 pr-12 border border-gray-700 text-sm font-mono text-gray-300">
               {user.id}
               <button
                 onClick={handleCopy}
@@ -139,15 +146,15 @@ export default function ProfilePage() {
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Stats</h2>
           {activeTab === 'singleplayer' ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-gray-900 p-4 rounded-lg text-center">
+              <div className="bg-black/10 p-4 rounded-lg text-center">
                 <h3 className="text-gray-400 text-sm mb-1">Games Played</h3>
                 <p className="text-2xl font-bold">{totalGames}</p>
               </div>
-              <div className="bg-gray-900 p-4 rounded-lg text-center">
+              <div className="bg-black/10 p-4 rounded-lg text-center">
                 <h3 className="text-gray-400 text-sm mb-1">High Score</h3>
                 <p className="text-2xl font-bold">{highScore}</p>
               </div>
-              <div className="bg-gray-900 p-4 rounded-lg text-center">
+              <div className="bg-black/10 p-4 rounded-lg text-center">
                 <h3 className="text-gray-400 text-sm mb-1">Best Accuracy</h3>
                 <p className="text-2xl font-bold">{bestAccuracy.toFixed(2)}%</p>
               </div>
@@ -158,7 +165,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Recent Games */}
-        <div className="bg-gray-900 p-6 rounded-lg">
+        <div className="bg-black/10 p-6 rounded-lg">
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Recent Games</h2>
           {activeTab === 'singleplayer' ? (
             games.length === 0 ? (
@@ -192,6 +199,9 @@ export default function ProfilePage() {
             <p className="text-center text-gray-500 py-8">In development</p>
           )}
         </div>
+      </div>
+      <div className="px-6 pb-4 pt-2">
+        <SiteFooter />
       </div>
     </div>
   )
