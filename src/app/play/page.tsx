@@ -94,7 +94,7 @@ export default function PlayPage() {
           {/* Left: Announcement */}
           <div className="w-full md:w-1/2">
             <h2 className="text-xl font-semibold text-center mb-4">Announcements</h2>
-            <p className="text-white/90 text-sm leading-relaxed text-left max-w-md mx-auto">
+            <p className="text-white/90 text-sm leading-relaxed text-center max-w-md mx-auto">
               {current?.announcement}
             </p>
           </div>
