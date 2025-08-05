@@ -10,16 +10,16 @@ const modes = [
   {
     id: 'singleplayer',
     label: 'Singleplayer',
-    description: 'Play solo and guess cities from satellite images.',
+    description: 'Guess cities from satellite images.',
     announcement:
-      'You can now play singleplayer! Test your knowledge of the world by guessing cities from above. More maps and features coming soon.',
+      'More features will be added in the future :)',
     route: '/play/singleplayer',
     enabled: true,
   },
   {
     id: 'multiplayer',
     label: 'Multiplayer',
-    description: 'Play casual or ranked matches with others (coming soon).',
+    description: 'Play casual or ranked matches with others (In development).',
     announcement:
       'Multiplayer is under development. Soon you’ll be able to join casual and ranked matches to compete with friends and strangers.',
     route: null,
@@ -28,7 +28,7 @@ const modes = [
   {
     id: 'party',
     label: 'Party Mode',
-    description: 'Host party games with friends (coming soon).',
+    description: 'Host party games with friends (In development).',
     announcement:
       'Party mode will let you create rooms and play live with your friends. (In development)',
     route: null,
@@ -37,7 +37,7 @@ const modes = [
   {
     id: 'tournament',
     label: 'Tournaments',
-    description: 'Compete in official events for glory (coming soon).',
+    description: 'Compete in official events for glory (In development).',
     announcement:
       'Battle Royale style. (In development)',
     route: null,
@@ -107,14 +107,14 @@ export default function PlayPage() {
                 onClick={() => router.push(current.route!)}
                 className="bg-emerald-600 hover:bg-emerald-500 text-white text-md font-semibold px-6 py-3 rounded-lg transition"
               >
-                Go to {current.label}
+                Play {current.label}
               </button>
             ) : (
               <button
                 disabled
                 className="bg-gray-700 text-white/40 text-md font-semibold px-6 py-3 rounded-lg cursor-not-allowed"
               >
-                Coming Soon
+                In development
               </button>
             )}
           </div>
