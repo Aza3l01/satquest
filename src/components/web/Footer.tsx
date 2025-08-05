@@ -10,7 +10,7 @@ export default function SiteFooter() {
         <div className="flex items-center gap-4 mb-2 md:mb-0 flex-wrap">
           <span>
             Made by{' '}
-            <Link href="https://example.com" className="text-emerald-600 underline">
+            <Link href="https://aza3l.vercel.app/" className="text-emerald-600 underline">
               Azael
             </Link>
           </span>
