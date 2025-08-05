@@ -5,6 +5,8 @@ import { supabase } from '@/lib/supabaseClient'
 import { getProfile } from '@/lib/profile'
 import { useParams } from 'next/navigation'
 import NavBar from '@/components/web/NavBar'
+import FriendsSlider from '@/components/web/FriendsSlider'
+import SiteFooter from '@/components/web/Footer'
 
 interface SingleplayerGame {
   id: string
@@ -58,10 +60,14 @@ export default function PublicProfilePage() {
   const bestAccuracy = Math.max(...games.map((g) => g.avg_accuracy), 0)
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div
+      className="min-h-screen text-white"
+      style={{ backgroundImage: "url('/bg2.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}
+    >
       <NavBar />
+      <FriendsSlider />
+
       <div className="max-w-5xl mx-auto px-6 pt-24 pb-8">
-        {/* Header */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8">
           <div className="flex-shrink-0">
             {profile?.avatar_url ? (
@@ -72,25 +78,18 @@ export default function PublicProfilePage() {
               />
             ) : (
               <div className="bg-emerald-600 rounded-full w-32 h-32 flex items-center justify-center border-4 border-emerald-500">
-                <span className="text-4xl font-bold">
+                <span className="text-4xl font-bold flex">
                   {profile?.display_name?.charAt(0)?.toUpperCase() || 'U'}
                 </span>
               </div>
             )}
           </div>
 
-          <div className="flex-grow">
+          <div className="flex items-center">
             <h1 className="text-3xl font-bold mb-2">{profile?.display_name}</h1>
-            <button
-              className="mt-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-medium"
-              disabled
-            >
-              Add Friend
-            </button>
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="mb-6">
           <div className="flex gap-4 border-b border-gray-700 mb-4">
             {['singleplayer', 'multiplayer', 'tournaments'].map((tab) => (
@@ -112,15 +111,15 @@ export default function PublicProfilePage() {
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Stats</h2>
           {activeTab === 'singleplayer' ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-gray-900 p-4 rounded-lg text-center">
+              <div className="bg-black/10 p-4 rounded-lg text-center">
                 <h3 className="text-gray-400 text-sm mb-1">Games Played</h3>
                 <p className="text-2xl font-bold">{totalGames}</p>
               </div>
-              <div className="bg-gray-900 p-4 rounded-lg text-center">
+              <div className="bg-black/10 p-4 rounded-lg text-center">
                 <h3 className="text-gray-400 text-sm mb-1">High Score</h3>
                 <p className="text-2xl font-bold">{highScore}</p>
               </div>
-              <div className="bg-gray-900 p-4 rounded-lg text-center">
+              <div className="bg-black/10 p-4 rounded-lg text-center">
                 <h3 className="text-gray-400 text-sm mb-1">Best Accuracy</h3>
                 <p className="text-2xl font-bold">{bestAccuracy.toFixed(2)}%</p>
               </div>
@@ -131,7 +130,7 @@ export default function PublicProfilePage() {
         </div>
 
         {/* Recent Games */}
-        <div className="bg-gray-900 p-6 rounded-lg">
+        <div className="bg-black/10 p-6 rounded-lg">
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Recent Games</h2>
           {activeTab === 'singleplayer' ? (
             games.length === 0 ? (
@@ -173,5 +172,6 @@ export default function PublicProfilePage() {
         </div>
       </div>
     </div>
+    
   )
 }
