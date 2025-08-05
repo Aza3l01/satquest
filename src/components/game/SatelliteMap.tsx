@@ -38,7 +38,6 @@ export default function SatelliteMap({ lat, lon }: { lat: number; lon: number })
     const marker = L.marker(position, {
       icon: L.divIcon({
         className: 'satellite-marker',
-        html: `<div class="w-8 h-8 bg-green-500 rounded-full border-4 border-white"></div>`,
         iconSize: [32, 32],
         iconAnchor: [16, 16]
       })
