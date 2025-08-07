@@ -1,5 +1,6 @@
 'use client'
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { useEffect, useRef } from 'react';
 
 export default function RoundResult({ 
@@ -32,7 +33,7 @@ export default function RoundResult({
       });
       
       tileLayerRef.current = L.tileLayer(
-        'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}', 
+        `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`, 
         { 
           maxZoom: 19,
         }
@@ -88,7 +89,7 @@ export default function RoundResult({
   }, [result]);
   
   return (
-    <div className="fixed inset-0 bg-black/80 flex flex-col items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/10 flex flex-col items-center justify-center z-50">
       <div className="bg-black/10 backdrop-blur-lg rounded-xl p-6 w-full max-w-3xl mx-4">
         <h2 className="text-2xl font-bold mb-4 text-center">ROUND {result.round}</h2>
         
@@ -107,7 +108,7 @@ export default function RoundResult({
               
               <div className="bg-black/10 p-3 rounded-lg">
                 <p className="text-sm text-white">Distance</p>
-                <p className="text-xl font-bold">{result.distance.toFixed(2)} km</p>
+                <p className="text-xl font-bold">{result.distance.toFixed(2)}</p>
               </div>
               
               <div className="bg-black/10 p-3 rounded-lg">
@@ -115,18 +116,26 @@ export default function RoundResult({
                 <p className="text-xl font-bold">{result.timeSpent}s</p>
               </div>
             </div>
-            
-            <button
-              onClick={onNext}
-              className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-bold mt-4"
-            >
-              {result.round < 5 ? 'Next Round' : 'See Final Results'}
-            </button>
           </div>
           
           <div className="h-64 rounded-lg overflow-hidden border border-gray-300">
             <div ref={containerRef} className="w-full h-full" />
           </div>
+        </div>
+        
+        <div className="flex gap-4 mt-6">
+          <button
+            onClick={() => window.location.href = '/'}
+            className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-bold transition"
+          >
+            Quit to Menu
+          </button>
+          <button
+            onClick={onNext}
+            className="flex-1 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-bold transition"
+          >
+            {result.round < 5 ? 'Next Round' : 'See Final Results'}
+          </button>
         </div>
       </div>
     </div>

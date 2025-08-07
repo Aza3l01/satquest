@@ -38,9 +38,8 @@ export default function HomePage() {
             <FriendsSlider />
 
             <div className="flex flex-col md:flex-row justify-between items-center h-full px-4 mt-10 gap-12">
-              {/* Left: Announcements */}
               <div className="flex-1 flex flex-col justify-center">
-                <h2 className="text-2xl font-normal text-center mb-4">Announcements</h2>
+                <h2 className="text-2xl font-normal text-center mb-4">Change Logs</h2>
                 <ul className="list-disc list-inside text-justify text-white/90 text-sm space-y-2 max-w-md mx-auto">
                   <p>
                     Welcome! SatQuest is very early in its development, so most features are under development.
