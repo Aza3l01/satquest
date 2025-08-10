@@ -62,7 +62,7 @@ export default function NavBar() {
           Play
         </Link>
         <Link href="/leaderboard" className={getTabClass('/leaderboard')}>
-          Leaderboards
+          Leaderboard
         </Link>
         {/* <Link href="/premium" className={getTabClass('/premium')}>
           Premium
@@ -104,20 +104,20 @@ export default function NavBar() {
         <div className="fixed right-6 top-16 w-48 bg-black/10 backdrop-blur-sm shadow-md rounded-lg text-white z-[9999]">
           <Link
             href="/profile"
-            className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-lg"
+            className="block w-full text-left px-4 py-2 hover:bg-emerald-800/60 rounded-lg"
             onClick={() => setDropdownOpen(false)}
           >
             Profile
           </Link>
           <Link
             href="/settings"
-            className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-lg"
+            className="block w-full text-left px-4 py-2 hover:bg-emerald-800/60 rounded-lg"
             onClick={() => setDropdownOpen(false)}
           >
             Settings
           </Link>
           <button
-            className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-lg"
+            className="block w-full text-left px-4 py-2 hover:bg-emerald-800/60 rounded-lg"
             onClick={handleLogout}
           >
             Log Out
