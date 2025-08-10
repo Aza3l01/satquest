@@ -1,13 +1,5 @@
-// src/components/web/CustomDropdown.tsx
-
 import { Fragment } from 'react'
-import {
-  Listbox,
-  ListboxButton,
-  ListboxOption,
-  ListboxOptions,
-  Transition,
-} from '@headlessui/react'
+import {Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition} from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid'
 
 export type DropdownOption = {
