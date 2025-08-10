@@ -103,7 +103,7 @@ export default function SiteFooter() {
           <Link href="/legal/terms" className="text-emerald-600 underline">
             Terms
           </Link>
-          <span className="text-white text-xs">v0.1.0</span>
+          <span className="text-white text-xs">v0.1.1</span>
         </div>
       </div>
     </footer>
