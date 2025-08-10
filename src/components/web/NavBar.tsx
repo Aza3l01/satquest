@@ -61,10 +61,10 @@ export default function NavBar() {
         <Link href="/play" className={`${getTabClass('/play')} font-bold text-lg`}>
           Play
         </Link>
-        {/* <Link href="/leaderboard" className={getTabClass('/leaderboard')}>
+        <Link href="/leaderboard" className={getTabClass('/leaderboard')}>
           Leaderboards
         </Link>
-        <Link href="/premium" className={getTabClass('/premium')}>
+        {/* <Link href="/premium" className={getTabClass('/premium')}>
           Premium
         </Link>
         <Link href="/shop" className={getTabClass('/shop')}>

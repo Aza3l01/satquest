@@ -7,7 +7,6 @@ import { getProfile } from '@/lib/profile'
 import NavBar from '@/components/web/NavBar'
 import SiteFooter from '@/components/web/Footer'
 import FriendsSlider from '@/components/web/FriendsSlider'
-import { ChevronUpIcon } from '@heroicons/react/24/solid'
 
 type Country = {
   id: string
@@ -25,7 +24,6 @@ const SingleplayerPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null)
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('medium')
-  const [showBackToTop, setShowBackToTop] = useState(false)
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -46,13 +44,6 @@ const SingleplayerPage = () => {
 
     fetchUser()
     fetchCountries()
-
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 300)
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const filteredCountries = countries.filter(c =>
@@ -62,10 +53,6 @@ const SingleplayerPage = () => {
   const handleStart = () => {
     if (!selectedCountry) return
     router.push(`/play/singleplayer/${selectedCountry.id}?difficulty=${selectedDifficulty}`)
-  }
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   if (loading) {
@@ -78,14 +65,14 @@ const SingleplayerPage = () => {
 
   return (
     <main
-      className="min-h-screen text-white px-6 py-4 flex flex-col bg-fixed bg-center bg-no-repeat bg-cover"
+      className="h-screen text-white px-2 py-2 flex flex-col bg-fixed bg-center bg-no-repeat bg-cover overflow-hidden"
       style={{ backgroundImage: "url('/bg2.jpg')" }}
     >
       <NavBar />
       <FriendsSlider />
 
-      <div className="max-w-6xl mx-auto w-full pt-24 pb-8 flex flex-col lg:flex-row gap-8 flex-grow">
-        <div className="lg:w-3/4">
+      <div className="max-w-6xl mx-auto w-full pt-16 flex flex-col lg:flex-row gap-8 flex-grow overflow-hidden">
+        <div className="lg:w-3/4 overflow-y-auto pr-4">
           <div
             className={`relative mb-6 cursor-pointer rounded-xl overflow-hidden border-2 ${
               selectedCountry?.id === 'world' ? 'border-emerald-500' : 'border-transparent'
@@ -98,7 +85,6 @@ const SingleplayerPage = () => {
             </div>
           </div>
 
-          {/* Country Search */}
           <input
             type="text"
             placeholder="Search for a country"
@@ -107,7 +93,6 @@ const SingleplayerPage = () => {
             className="w-full bg-black/10 backdrop-blur-md text-white p-3 rounded-lg mb-6"
           />
 
-          {/* Country Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredCountries.map((country) => (
               <div
@@ -128,7 +113,7 @@ const SingleplayerPage = () => {
           </div>
         </div>
 
-        <div className="lg:w-1/4 sticky top-24">
+        <div className="lg:w-1/4">
           <div className="bg-gray-900 p-4 rounded-lg">
             <h2 className="text-xl font-bold text-emerald-400 mb-4">Player Info</h2>
             <div className="flex items-center mb-6">
@@ -194,15 +179,6 @@ const SingleplayerPage = () => {
           </div>
         </div>
       </div>
-
-      {showBackToTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-6 right-6 bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-full shadow-lg z-50 transition"
-        >
-          <ChevronUpIcon className="h-6 w-6" />
-        </button>
-      )}
 
       <SiteFooter />
     </main>
