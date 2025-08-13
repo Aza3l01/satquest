@@ -71,7 +71,7 @@ export default function RoundResult({
       }).addTo(markersRef.current);
       
       L.polyline([actualPos, guessPos], {
-        color: '#ff0000',
+        color: '#ffffffff',
         weight: 2,
       }).addTo(markersRef.current);
     }
