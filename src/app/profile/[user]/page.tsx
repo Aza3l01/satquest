@@ -8,7 +8,7 @@ import NavBar from '@/components/web/NavBar'
 import FriendsSlider from '@/components/web/FriendsSlider'
 import SiteFooter from '@/components/web/Footer'
 
-interface SingleplayerGame {
+interface ClassicGame {
   id: string
   mode: string
   difficulty: string
@@ -17,22 +17,35 @@ interface SingleplayerGame {
   played_at: string
 }
 
+// --- CHANGE: Defined the new tabs with their IDs and labels ---
+const profileTabs = [
+  { id: 'classic', label: 'Classic' },
+  { id: 'casual', label: 'Casual' },
+  { id: 'ranked', label: 'Ranked' },
+  { id: 'elimination', label: 'Elimination' },
+  { id: 'party', label: 'Party' },
+]
+
 export default function PublicProfilePage() {
   const { user: userId } = useParams<{ user: string }>()
   const [profile, setProfile] = useState<any>(null)
-  const [games, setGames] = useState<SingleplayerGame[]>([])
+  const [games, setGames] = useState<ClassicGame[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'singleplayer' | 'multiplayer' | 'tournaments'>('singleplayer')
+  // --- CHANGE: Updated activeTab state to use the new IDs ---
+  const [activeTab, setActiveTab] = useState('classic')
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!userId || typeof userId !== 'string') return
+      if (!userId || typeof userId !== 'string') {
+        setLoading(false)
+        return
+      }
 
       const profileData = await getProfile(userId)
       setProfile(profileData)
 
       const { data: gameData, error } = await supabase
-        .from('singleplayer_games')
+        .from('classic_games')
         .select('*')
         .eq('user_id', userId)
         .order('played_at', { ascending: false })
@@ -51,6 +64,14 @@ export default function PublicProfilePage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+      </div>
+    )
+  }
+  
+  if (!profile) {
+    return (
+       <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        User not found.
       </div>
     )
   }
@@ -85,22 +106,23 @@ export default function PublicProfilePage() {
             )}
           </div>
 
-          <div className="flex items-center">
-            <h1 className="text-3xl font-bold mb-2">{profile?.display_name}</h1>
+          <div className="flex items-center pt-4">
+            <h1 className="text-3xl font-bold">{profile?.display_name}</h1>
           </div>
         </div>
 
         <div className="mb-6">
           <div className="flex gap-4 border-b border-gray-700 mb-4">
-            {['singleplayer', 'multiplayer', 'tournaments'].map((tab) => (
+            {/* --- CHANGE: Looping over the new profileTabs array --- */}
+            {profileTabs.map((tab) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab as any)}
-                className={`py-2 px-4 font-semibold capitalize ${
-                  activeTab === tab ? 'border-b-2 border-emerald-500 text-emerald-400' : 'text-gray-400'
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`py-2 px-4 font-semibold ${
+                  activeTab === tab.id ? 'border-b-2 border-emerald-500 text-emerald-400' : 'text-gray-400'
                 }`}
               >
-                {tab}
+                {tab.label}
               </button>
             ))}
           </div>
@@ -109,7 +131,8 @@ export default function PublicProfilePage() {
         {/* Stats */}
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Stats</h2>
-          {activeTab === 'singleplayer' ? (
+          {/* --- CHANGE: Checking for 'classic' tab --- */}
+          {activeTab === 'classic' ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-black/10 p-4 rounded-lg text-center">
                 <h3 className="text-gray-400 text-sm mb-1">Games Played</h3>
@@ -132,7 +155,8 @@ export default function PublicProfilePage() {
         {/* Recent Games */}
         <div className="bg-black/10 p-6 rounded-lg">
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Recent Games</h2>
-          {activeTab === 'singleplayer' ? (
+          {/* --- CHANGE: Checking for 'classic' tab --- */}
+          {activeTab === 'classic' ? (
             games.length === 0 ? (
               <p className="text-gray-400 text-center py-8">No games played yet</p>
             ) : (
@@ -140,25 +164,25 @@ export default function PublicProfilePage() {
                 <div className="grid grid-cols-5 text-sm text-gray-400 font-medium border-b border-gray-800 pb-2 mb-2">
                   <div>Mode</div>
                   <div>Difficulty</div>
-                  <div>Avg. Accuracy</div>
-                  <div>Points</div>
-                  <div>Date</div>
+                  <div className="text-center">Accuracy</div>
+                  <div className="text-center">Score</div>
+                  <div className="text-right">Date Played</div>
                 </div>
                 <div className="space-y-2">
                   {games.map((game) => (
                     <div
                       key={game.id}
-                      className="grid grid-cols-5 text-sm border-b border-gray-800 pb-2"
+                      className="grid grid-cols-5 text-sm items-center text-gray-300 border-b border-gray-800 pb-2"
                     >
                       <div className="text-gray-300">
                         {game.mode === 'world' ? 'World' : game.mode.toUpperCase()}
                       </div>
                       <div className="text-gray-300 capitalize">{game.difficulty}</div>
-                      <div className="text-emerald-400 font-bold">
+                      <div className="text-center text-emerald-400 font-bold">
                         {game.avg_accuracy.toFixed(2)}%
                       </div>
-                      <div className="font-semibold">{game.score} pts</div>
-                      <div className="text-gray-400">
+                      <div className="text-center font-semibold">{game.score} pts</div>
+                      <div className="text-right text-gray-400">
                         {new Date(game.played_at).toLocaleDateString()}
                       </div>
                     </div>
@@ -171,7 +195,9 @@ export default function PublicProfilePage() {
           )}
         </div>
       </div>
+      <div className="px-6 pb-4 pt-2">
+        <SiteFooter />
+      </div>
     </div>
-    
   )
 }

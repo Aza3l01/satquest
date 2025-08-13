@@ -9,7 +9,8 @@ import NavBar from '@/components/web/NavBar'
 import FriendsSlider from '@/components/web/FriendsSlider'
 import SiteFooter from '@/components/web/Footer'
 
-interface SingleplayerGame {
+// --- CHANGE: Renamed interface for clarity ---
+interface ClassicGame {
   id: string
   mode: string
   difficulty: string
@@ -18,12 +19,22 @@ interface SingleplayerGame {
   played_at: string
 }
 
+// --- CHANGE: Defined the new tabs with their IDs and labels ---
+const profileTabs = [
+  { id: 'classic', label: 'Classic' },
+  { id: 'casual', label: 'Casual' },
+  { id: 'ranked', label: 'Ranked' },
+  { id: 'elimination', label: 'Elimination' },
+  { id: 'party', label: 'Party' },
+]
+
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
-  const [games, setGames] = useState<SingleplayerGame[]>([])
+  const [games, setGames] = useState<ClassicGame[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'singleplayer' | 'multiplayer' | 'tournament'>('singleplayer')
+  // --- CHANGE: Updated activeTab state to use the new IDs ---
+  const [activeTab, setActiveTab] = useState('classic')
   const [copied, setCopied] = useState(false)
   const router = useRouter()
 
@@ -39,8 +50,9 @@ export default function ProfilePage() {
       const profileData = await getProfile(data.user.id)
       setProfile(profileData)
 
+      // The database table is still named 'singleplayer_games' for now
       const { data: gameData, error } = await supabase
-        .from('singleplayer_games')
+        .from('classic_games')
         .select('*')
         .eq('user_id', data.user.id)
         .order('played_at', { ascending: false })
@@ -57,9 +69,19 @@ export default function ProfilePage() {
 
   const handleCopy = () => {
     if (!user?.id) return
-    navigator.clipboard.writeText(user.id)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    // Using a fallback for navigator.clipboard for wider compatibility
+    const textArea = document.createElement('textarea')
+    textArea.value = user.id
+    document.body.appendChild(textArea)
+    textArea.select()
+    try {
+      document.execCommand('copy')
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy text: ', err)
+    }
+    document.body.removeChild(textArea)
   }
 
   if (loading) {
@@ -127,15 +149,16 @@ export default function ProfilePage() {
         {/* Tabs */}
         <div className="mb-6">
           <div className="flex gap-4 border-b border-gray-700 mb-4">
-            {['singleplayer', 'multiplayer', 'tournament'].map((tab) => (
+            {/* --- CHANGE: Looping over the new profileTabs array --- */}
+            {profileTabs.map((tab) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab as any)}
-                className={`py-2 px-4 font-semibold capitalize ${
-                  activeTab === tab ? 'border-b-2 border-emerald-500 text-emerald-400' : 'text-gray-400'
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`py-2 px-4 font-semibold ${
+                  activeTab === tab.id ? 'border-b-2 border-emerald-500 text-emerald-400' : 'text-gray-400'
                 }`}
               >
-                {tab}
+                {tab.label}
               </button>
             ))}
           </div>
@@ -144,7 +167,8 @@ export default function ProfilePage() {
         {/* Stats */}
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Stats</h2>
-          {activeTab === 'singleplayer' ? (
+          {/* --- CHANGE: Checking for 'classic' tab --- */}
+          {activeTab === 'classic' ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-black/10 p-4 rounded-lg text-center">
                 <h3 className="text-gray-400 text-sm mb-1">Games Played</h3>
@@ -167,7 +191,8 @@ export default function ProfilePage() {
         {/* Recent Games */}
         <div className="bg-black/10 p-6 rounded-lg">
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Recent Games</h2>
-          {activeTab === 'singleplayer' ? (
+          {/* --- CHANGE: Checking for 'classic' tab --- */}
+          {activeTab === 'classic' ? (
             games.length === 0 ? (
               <p className="text-gray-400 text-center py-8">No games played yet</p>
             ) : (
@@ -186,7 +211,7 @@ export default function ProfilePage() {
                       className="grid grid-cols-5 text-sm items-center text-gray-300 border-b border-gray-800 pb-2"
                     >
                       <div>{game.mode === 'world' ? 'World' : game.mode.toUpperCase()}</div>
-                      <div>{game.difficulty}</div>
+                      <div className="capitalize">{game.difficulty}</div>
                       <div className="text-center text-emerald-400 font-semibold">{game.avg_accuracy.toFixed(2)}%</div>
                       <div className="text-center font-semibold">{game.score} pts</div>
                       <div className="text-right text-gray-400">{new Date(game.played_at).toLocaleDateString()}</div>

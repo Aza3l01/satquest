@@ -6,47 +6,58 @@ import NavBar from '@/components/web/NavBar'
 import FriendsSlider from '@/components/web/FriendsSlider'
 import SiteFooter from '@/components/web/Footer'
 
+// --- CHANGE: Updated the modes array with the new names and order ---
 const modes = [
   {
-    id: 'singleplayer',
-    label: 'Singleplayer',
-    description: 'Guess cities from satellite images.',
+    id: 'classic',
+    label: 'Classic',
+    description: 'Guess cities from satellite images in the original solo experience.',
     announcement:
-      'More features will be added in the future :)',
-    route: '/play/singleplayer',
+      'The original singleplayer experience. Challenge yourself and set a new high score!',
+    route: '/play/classic',
     enabled: true,
   },
   {
-    id: 'multiplayer',
-    label: 'Multiplayer',
-    description: 'Play casual or ranked matches with others (In development).',
+    id: 'casual',
+    label: 'Casual',
+    description: 'Play casual, unranked matches with other players (In development).',
     announcement:
-      'Multiplayer is under development. Soon you’ll be able to join casual and ranked matches to compete with friends and strangers.',
+      'Casual multiplayer is under development. A chill way to play with the community.',
+    route: null,
+    enabled: false,
+  },
+  {
+    id: 'ranked',
+    label: 'Ranked',
+    description: 'Compete in skill-based matches and climb the ladder (In development).',
+    announcement:
+      'Ranked mode with an ELO system is coming soon. Get ready to prove your skills!',
+    route: null,
+    enabled: false,
+  },
+  {
+    id: 'elimination',
+    label: 'Elimination',
+    description: 'A battle royale where the player with the worst guess each round is eliminated (In development).',
+    announcement:
+      'Last one standing wins. Elimination mode is under development.',
     route: null,
     enabled: false,
   },
   {
     id: 'party',
-    label: 'Party Mode',
-    description: 'Host party games with friends (In development).',
+    label: 'Party',
+    description: 'Host private games to play with just your friends (In development).',
     announcement:
-      'Party mode will let you create rooms and play live with your friends. (In development)',
-    route: null,
-    enabled: false,
-  },
-  {
-    id: 'tournament',
-    label: 'Tournaments',
-    description: 'Compete in official events for glory (In development).',
-    announcement:
-      'Battle Royale style. (In development)',
+      'Party mode will let you create private rooms. Coming soon!',
     route: null,
     enabled: false,
   },
 ]
 
 export default function PlayPage() {
-  const [selectedMode, setSelectedMode] = useState('singleplayer')
+  // --- CHANGE: Default mode is now 'classic' ---
+  const [selectedMode, setSelectedMode] = useState('classic')
   const router = useRouter()
 
   const current = modes.find((m) => m.id === selectedMode)

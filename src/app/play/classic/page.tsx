@@ -15,7 +15,8 @@ type Country = {
 
 const difficultyLevels = ['easy', 'medium', 'hard']
 
-const SingleplayerPage = () => {
+// --- CHANGE: Renamed component ---
+const ClassicPage = () => {
   const router = useRouter()
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const [profile, setProfile] = useState<any>(null)
@@ -52,7 +53,8 @@ const SingleplayerPage = () => {
 
   const handleStart = () => {
     if (!selectedCountry) return
-    router.push(`/play/singleplayer/${selectedCountry.id}?difficulty=${selectedDifficulty}`)
+    // --- CHANGE: Updated the route to '/play/classic/' ---
+    router.push(`/play/classic/${selectedCountry.id}?difficulty=${selectedDifficulty}`)
   }
 
   if (loading) {
@@ -185,4 +187,5 @@ const SingleplayerPage = () => {
   )
 }
 
-export default SingleplayerPage
+// --- CHANGE: Renamed export ---
+export default ClassicPage

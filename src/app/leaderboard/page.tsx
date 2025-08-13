@@ -14,11 +14,13 @@ type Profile = { display_name: string; avatar_url: string | null }
 type LeaderboardEntry = { score: number; avg_accuracy: number; display_name: string; avatar_url: string | null }
 type UserRank = { rank: number | null; high_score: number | null; high_accuracy: number | null }
 
+// --- CHANGE: Updated leaderboard types and order ---
 const leaderboardTypes = [
-  { id: 'singleplayer', label: 'Singleplayer' },
-  { id: 'multiplayer', label: 'Multiplayer' },
-  { id: 'party', label: 'Party Mode' },
-  { id: 'tournaments', label: 'Tournaments' },
+  { id: 'classic', label: 'Classic' },
+  { id: 'casual', label: 'Casual' },
+  { id: 'ranked', label: 'Ranked' },
+  { id: 'elimination', label: 'Elimination' },
+  { id: 'party', label: 'Party' },
 ]
 
 // Data for the difficulty dropdown
@@ -41,7 +43,8 @@ const Avatar = ({ profile }: { profile: { display_name: string; avatar_url: stri
 }
 
 const LeaderboardPage = () => {
-  const [selectedTab, setSelectedTab] = useState('singleplayer')
+  // --- CHANGE: Default selected tab is now 'classic' ---
+  const [selectedTab, setSelectedTab] = useState('classic')
   const [countries, setCountries] = useState<Country[]>([])
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([])
   const [userRank, setUserRank] = useState<UserRank | null>(null)
@@ -120,7 +123,8 @@ const LeaderboardPage = () => {
       </div>
 
       <div className="flex-grow w-full max-w-4xl mx-auto px-6 py-8">
-        {selectedTab === 'singleplayer' ? (
+        {/* --- CHANGE: Check for 'classic' tab to show the leaderboard --- */}
+        {selectedTab === 'classic' ? (
           <div className="bg-black/10 backdrop-blur-md rounded-lg overflow-hidden">
             <div className="flex items-center gap-3 p-3 border-b border-white/10">
               <div className="flex-1">
@@ -183,7 +187,7 @@ const LeaderboardPage = () => {
           </div>
         ) : (
             <div className="text-center py-20">
-                <h2 className="text-2xl font-bold text-gray-400">{selectedTab.charAt(0).toUpperCase() + selectedTab.slice(1)} Leaderboard</h2>
+                <h2 className="text-2xl font-bold text-gray-400">{leaderboardTypes.find(t => t.id === selectedTab)?.label} Leaderboard</h2>
                 <p className="text-gray-500 mt-2">(Coming Soon)</p>
             </div>
         )}

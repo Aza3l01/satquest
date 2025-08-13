@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
+import SiteFooter from '@/components/web/Footer'
 
 interface FinalResultProps {
   results: any[]
@@ -30,7 +31,7 @@ export default function FinalResult({
 
   useEffect(() => {
     if (isGuest) {
-      return;
+      return; // Do not save game results for guests
     }
 
     const saveGame = async () => {
@@ -48,7 +49,8 @@ export default function FinalResult({
         return
       }
 
-      const { error: insertError } = await supabase.from('singleplayer_games').insert([
+      // --- CHANGE: Updated table name to 'classic_games' ---
+      const { error: insertError } = await supabase.from('classic_games').insert([
         {
           user_id: user.id,
           mode,
@@ -73,7 +75,7 @@ export default function FinalResult({
     <div className="bg-[url('/bg2.jpg')] fixed inset-0 flex items-center justify-center z-50">
       <div className="bg-black/10 backdrop-blur-lg rounded-xl p-8 max-w-3xl w-full mx-4">
         <h2 className="text-3xl font-bold mb-6 text-center">
-          Game Complete!
+          {isGuest ? 'Demo Complete!' : 'Game Complete!'}
         </h2>
 
         <div className="grid grid-cols-3 gap-4 mb-8">
@@ -122,6 +124,7 @@ export default function FinalResult({
         <div className="flex justify-center gap-4">
           {isGuest ? (
             <div className="text-center">
+              <p className="mb-4">Enjoyed the demo?</p>
               <button
                 onClick={() => router.push('/')}
                 className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-bold text-lg"
