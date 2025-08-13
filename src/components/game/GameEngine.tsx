@@ -23,6 +23,19 @@ interface GameEngineProps {
   difficulty: 'easy' | 'medium' | 'hard'
 }
 
+const getZoomForDifficulty = (difficulty: 'easy' | 'medium' | 'hard'): number => {
+  switch (difficulty) {
+    case 'easy':
+      return 15;
+    case 'medium':
+      return 13;
+    case 'hard':
+      return 11;
+    default:
+      return 14;
+  }
+};
+
 export default function GameEngine({
   mode,
   difficulty,
@@ -63,14 +76,20 @@ export default function GameEngine({
             pool = sorted.slice(-sliceSize)
             break
         }
-
-        setCities(pool)
-        selectRandomCity(pool)
+        
+        const availableCities = pool.filter(p => !results.some(r => r.city.id === p.id));
+        setCities(availableCities);
+        selectRandomCity(availableCities);
       })
       .catch(error => console.error('Failed to load cities:', error))
   }, [mode, difficulty])
 
   const selectRandomCity = (list: City[]) => {
+    if (list.length === 0) {
+      console.error("No more unique cities to select!");
+      setGameState('finished');
+      return;
+    }
     const idx = Math.floor(Math.random() * list.length)
     setCurrentCity(list[idx])
     setGuessCoords(null)
@@ -110,7 +129,9 @@ export default function GameEngine({
     } else {
       setRound(r => r + 1)
       setTimeLeft(90)
-      selectRandomCity(cities)
+      const remainingCities = cities.filter(city => city.id !== currentCity?.id);
+      setCities(remainingCities);
+      selectRandomCity(remainingCities)
       setGameState('playing')
     }
   }
@@ -147,7 +168,11 @@ export default function GameEngine({
         </button>
       </div>
 
-      <SatelliteMap lat={currentCity.lat} lon={currentCity.lon} />
+      <SatelliteMap
+        lat={currentCity.lat}
+        lon={currentCity.lon}
+        zoom={getZoomForDifficulty(difficulty)}
+      />
 
       <div className="absolute bottom-4 right-4 z-10">
         <GuessMap
