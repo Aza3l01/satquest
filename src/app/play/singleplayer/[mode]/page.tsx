@@ -1,26 +1,22 @@
-'use client'
+'use client';
 
-import { useSearchParams, useParams } from 'next/navigation'
-import GameEngine from '@/components/game/GameEngine'
+import { useSearchParams, useParams } from 'next/navigation';
+import GameEngine from '@/components/game/GameEngine';
 
-export default function SinglePlayerGamePage() {
-  const params = useParams()
-  const searchParams = useSearchParams()
+export default function GamePageClient() {
+  const searchParams = useSearchParams();
+  const params = useParams<{ mode: string }>();
 
-  const mode = params.mode as string
-  const difficulty = searchParams.get('difficulty') as 'easy' | 'medium' | 'hard' | null
-
-  if (!difficulty || !['easy', 'medium', 'hard'].includes(difficulty)) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-black text-white">
-        <p className="text-lg">Invalid or missing difficulty.</p>
-      </div>
-    )
-  }
+  const isGuest = searchParams.get('guest') === 'true';
+  const difficulty = (
+    searchParams.get('difficulty') as 'easy' | 'medium' | 'hard' | null
+  ) || 'medium';
 
   return (
-    <div className="h-screen">
-      <GameEngine mode={mode} difficulty={difficulty} />
-    </div>
-  )
+    <GameEngine
+      mode={params.mode}
+      difficulty={difficulty}
+      isGuest={isGuest}
+    />
+  );
 }
