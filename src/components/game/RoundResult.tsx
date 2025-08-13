@@ -1,25 +1,29 @@
 'use client'
+
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function RoundResult({ 
   result, 
-  onNext 
+  onNext,
+  isGuest = false
 }: {
   result: any;
   onNext: () => void;
+  isGuest?: boolean;
 }) {
   const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tileLayerRef = useRef<L.TileLayer | null>(null);
   const markersRef = useRef<L.LayerGroup | null>(null);
+  const router = useRouter();
   
   useEffect(() => {
     if (!containerRef.current || !result) return;
     
     const actualPos: [number, number] = [result.city.lat, result.city.lon];
-    const guessPos: [number, number] = [result.guess[1], result.guess[0]];
     
     if (!mapRef.current) {
       mapRef.current = L.map(containerRef.current, {
@@ -37,21 +41,15 @@ export default function RoundResult({
         `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`, 
         { 
           maxZoom: 19,
-          
         }
       ).addTo(mapRef.current);
       
       markersRef.current = L.layerGroup().addTo(mapRef.current);
     }
-
-    const bounds = L.latLngBounds([actualPos, guessPos]);
-    bounds.pad(1);
     
-    mapRef.current.fitBounds(bounds);
-
     if (markersRef.current) {
       markersRef.current.clearLayers();
-      
+
       L.marker(actualPos, {
         icon: L.divIcon({
           className: 'correct-marker',
@@ -60,20 +58,30 @@ export default function RoundResult({
           iconAnchor: [12, 12]
         })
       }).addTo(markersRef.current);
-      
-      L.marker(guessPos, {
-        icon: L.divIcon({
-          className: 'guess-marker',
-          html: `<div class="w-6 h-6 bg-red-500 rounded-full border-2 border-white"></div>`,
-          iconSize: [24, 24],
-          iconAnchor: [12, 12]
-        })
-      }).addTo(markersRef.current);
-      
-      L.polyline([actualPos, guessPos], {
-        color: '#ffffffff',
-        weight: 2,
-      }).addTo(markersRef.current);
+
+      if (result.guess) {
+        const guessPos: [number, number] = [result.guess[1], result.guess[0]];
+        
+        L.marker(guessPos, {
+          icon: L.divIcon({
+            className: 'guess-marker',
+            html: `<div class="w-6 h-6 bg-red-500 rounded-full border-2 border-white"></div>`,
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+          })
+        }).addTo(markersRef.current);
+        
+        L.polyline([actualPos, guessPos], {
+          color: '#ffffff',
+          weight: 2,
+        }).addTo(markersRef.current);
+
+        const bounds = L.latLngBounds([actualPos, guessPos]);
+        bounds.pad(1);
+        mapRef.current.fitBounds(bounds);
+      } else {
+        mapRef.current.setView(actualPos, 5);
+      }
     }
     
     setTimeout(() => {
@@ -110,7 +118,7 @@ export default function RoundResult({
               
               <div className="bg-black/10 p-3 rounded-lg">
                 <p className="text-sm text-white">Distance</p>
-                <p className="text-xl font-bold">{result.distance.toFixed(2)}</p>
+                <p className="text-xl font-bold">{result.guess ? `${result.distance.toFixed(2)}` : "Didn't Guess"}</p>
               </div>
               
               <div className="bg-black/10 p-3 rounded-lg">
@@ -126,17 +134,27 @@ export default function RoundResult({
         </div>
         
         <div className="flex gap-4 mt-6">
-          <button
-            onClick={() => window.location.href = '/'}
-            className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-bold transition"
-          >
-            Quit to Menu
-          </button>
+          {isGuest ? (
+            <button
+              onClick={() => router.push('/')}
+              className="flex-1 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-bold transition"
+            >
+              Quit & Sign Up
+            </button>
+          ) : (
+            <button
+              onClick={() => router.push('/play')}
+              className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-bold transition"
+            >
+              Quit to Menu
+            </button>
+          )}
+
           <button
             onClick={onNext}
             className="flex-1 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-bold transition"
           >
-            {result.round < 5 ? 'Next Round' : 'See Final Results'}
+            {result.round < 5 ? 'Next Round' : 'See Final Score'}
           </button>
         </div>
       </div>
