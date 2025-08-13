@@ -3,8 +3,6 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
-
-// Icons
 import { FaGoogle, FaDiscord, FaGithub, FaTwitch, FaTwitter, FaSpotify } from 'react-icons/fa'
 
 export default function SignInForm() {
@@ -36,43 +34,49 @@ export default function SignInForm() {
   }
 
   return (
-    <div className="p-6 bg-white/20 backdrop-blur-md rounded max-w-md w-full text-white shadow-lg">
+    <div className="p-6 bg-black/10 backdrop-blur-md rounded max-w-md w-full text-white shadow-lg">
       <h2 className="text-xl font-bold mb-4 text-center">Welcome Back!</h2>
 
-      <div className="grid grid-cols-3 gap-4 mb-4">
+      <div className="flex justify-center gap-5 mb-4">
         <button
           onClick={() => handleOAuthLogin('google')}
-          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+          className="p-3 hover:bg-white/10 rounded-full transition-colors"
+          aria-label="Sign in with Google"
         >
           <FaGoogle className="h-6 w-6" />
         </button>
         <button
           onClick={() => handleOAuthLogin('discord')}
-          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+          className="p-3 hover:bg-white/10 rounded-full transition-colors"
+          aria-label="Sign in with Discord"
         >
           <FaDiscord className="h-6 w-6" />
         </button>
         <button
           onClick={() => handleOAuthLogin('github')}
-          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+          className="p-3 hover:bg-white/10 rounded-full transition-colors"
+          aria-label="Sign in with GitHub"
         >
           <FaGithub className="h-6 w-6" />
         </button>
         <button
           onClick={() => handleOAuthLogin('twitch')}
-          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+          className="p-3 hover:bg-white/10 rounded-full transition-colors"
+          aria-label="Sign in with Twitch"
         >
           <FaTwitch className="h-6 w-6" />
         </button>
         <button
           onClick={() => handleOAuthLogin('twitter')}
-          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+          className="p-3 hover:bg-white/10 rounded-full transition-colors"
+          aria-label="Sign in with Twitter"
         >
           <FaTwitter className="h-6 w-6" />
         </button>
         <button
           onClick={() => handleOAuthLogin('spotify')}
-          className="p-3 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center"
+          className="p-3 hover:bg-white/10 rounded-full transition-colors"
+          aria-label="Sign in with Spotify"
         >
           <FaSpotify className="h-6 w-6" />
         </button>
