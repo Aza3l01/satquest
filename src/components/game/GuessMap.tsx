@@ -46,9 +46,9 @@ export default function GuessMap({
       tileLayerRef.current = L.tileLayer(
         `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`,
         {
-          maxZoom: 19,
+          maxZoom: 18,
           tileSize: 256,
-          detectRetina: true,
+          detectRetina: false,
           attribution: '© Mapbox',
           // Remove non-standard options:
           // updateWhenIdle: false,
