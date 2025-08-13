@@ -52,7 +52,6 @@ export default function HomePage() {
                 </ul>
               </div>
 
-              {/* Right: Play Section */}
               <div className="flex-1 flex flex-col items-center justify-center text-center">
                 <MapPinIcon className="w-10 h-10 text-emerald-500 mb-4" />
                 <h2 className="text-3xl font-extrabold mb-4 drop-shadow-lg leading-tight">
@@ -71,6 +70,7 @@ export default function HomePage() {
           <div className="flex flex-1 flex-col justify-center items-center text-center px-6">
             <div className="mb-10 max-w-2xl mx-auto">
               <img src="/logo_big.svg" alt="SatQuest Logo" className="h-20 mx-auto mb-4" />
+              {/* <h1 className="text-white/0">SatQuest: Satellite Geography Guessing Game</h1> #FOR SEO LATER IDK WILL DO SOMETHING ELSE*/}
               <h2 className="text-3xl font-bold mt-2">Explore From Above!</h2>
               <p className="text-md text-gray-200 mt-2">
                 SatQuest is a geography guessing game that tests your ability to recognize locations from satellite images.
