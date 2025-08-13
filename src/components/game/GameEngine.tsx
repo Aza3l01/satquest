@@ -135,7 +135,8 @@ export default function GameEngine({
 
     const distance = calculateDistance([currentCity.lon, currentCity.lat], guessCoords)
     const accuracy = calculateAccuracy(distance)
-    const score = Math.round((timeLeft * accuracy) / 100)
+    const MAX_ROUND_SCORE = 1000;
+    const score = Math.round(MAX_ROUND_SCORE * (accuracy / 100) * (timeLeft / 90));
     const result = { round, city: currentCity, guess: guessCoords, accuracy, distance, timeSpent: 90 - timeLeft, score }
     setResults(prev => [...prev, result])
     setGameState('result')
