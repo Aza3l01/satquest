@@ -1,12 +1,18 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import SatelliteMap from '@/components/game/SatelliteMap'
-import GuessMap from '@/components/game/GuessMap'
 import Timer from '@/components/game/Timer'
 import RoundCounter from '@/components/game/RoundCounter'
 import RoundResult from '@/components/game/RoundResult'
 import FinalResult from '@/components/game/FinalResult'
+
+const GuessMap = dynamic(() => import('@/components/game/GuessMap'), {
+  ssr: false,
+  loading: () => <div className="min-w-[180px] min-h-[135px] bg-gray-800 rounded-lg flex items-center justify-center"><p className="text-white/50 text-sm">Loading map...</p></div>
+});
 
 interface City {
   id: string
@@ -21,6 +27,7 @@ interface City {
 interface GameEngineProps {
   mode: string
   difficulty: 'easy' | 'medium' | 'hard'
+  isGuest?: boolean
 }
 
 const getZoomForDifficulty = (difficulty: 'easy' | 'medium' | 'hard'): number => {
@@ -39,6 +46,7 @@ const getZoomForDifficulty = (difficulty: 'easy' | 'medium' | 'hard'): number =>
 export default function GameEngine({
   mode,
   difficulty,
+  isGuest = false,
 }: GameEngineProps) {
   const [round, setRound] = useState(1)
   const [timeLeft, setTimeLeft] = useState(90)
@@ -47,6 +55,8 @@ export default function GameEngine({
   const [currentCity, setCurrentCity] = useState<City | null>(null)
   const [guessCoords, setGuessCoords] = useState<[number, number] | null>(null)
   const [results, setResults] = useState<any[]>([])
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     fetch('/data/cities.json')
@@ -86,39 +96,47 @@ export default function GameEngine({
 
   const selectRandomCity = (list: City[]) => {
     if (list.length === 0) {
-      console.error("No more unique cities to select!");
       setGameState('finished');
       return;
     }
     const idx = Math.floor(Math.random() * list.length)
     setCurrentCity(list[idx])
     setGuessCoords(null)
+    setIsMapLoaded(false);
   }
+  
+  const handleMapLoad = () => {
+    setIsMapLoaded(true);
+  };
 
   const handleGuess = (coords: [number, number]) => {
     setGuessCoords(coords)
   }
 
-  const handleConfirm = () => {
-    if (!currentCity || !guessCoords) return
-
-    const distance = calculateDistance(
-      [currentCity.lon, currentCity.lat],
-      guessCoords
-    )
-    const accuracy = calculateAccuracy(distance)
-    const score = Math.round((timeLeft * accuracy) / 100)
+  const handleTimeUp = () => {
+    if (!currentCity) return;
 
     const result = {
       round,
       city: currentCity,
-      guess: guessCoords,
-      accuracy,
-      distance,
-      timeSpent: 90 - timeLeft,
-      score,
-    }
+      guess: null,
+      accuracy: 0,
+      distance: 20000,
+      timeSpent: 90,
+      score: 0,
+    };
 
+    setResults(prev => [...prev, result]);
+    setGameState('result');
+  };
+
+  const handleConfirm = () => {
+    if (!currentCity || !guessCoords) return
+
+    const distance = calculateDistance([currentCity.lon, currentCity.lat], guessCoords)
+    const accuracy = calculateAccuracy(distance)
+    const score = Math.round((timeLeft * accuracy) / 100)
+    const result = { round, city: currentCity, guess: guessCoords, accuracy, distance, timeSpent: 90 - timeLeft, score }
     setResults(prev => [...prev, result])
     setGameState('result')
   }
@@ -135,17 +153,30 @@ export default function GameEngine({
       setGameState('playing')
     }
   }
+  
+  const handleQuit = () => {
+    if (isGuest) {
+      router.push('/');
+    } else {
+      router.push('/play');
+    }
+  }
 
   useEffect(() => {
-    if (gameState !== 'playing' || timeLeft <= 0) return
+    if (gameState !== 'playing' || !isMapLoaded || timeLeft <= 0) {
+      return;
+    }
 
     const timerId = setTimeout(() => {
-      setTimeLeft(t => t - 1)
-      if (timeLeft === 1) handleConfirm()
-    }, 1000)
+      setTimeLeft(t => t - 1);
+    }, 1000);
 
-    return () => clearTimeout(timerId)
-  }, [timeLeft, gameState])
+    if (timeLeft === 1) {
+        setTimeout(handleTimeUp, 1000);
+    }
+
+    return () => clearTimeout(timerId);
+  }, [timeLeft, gameState, isMapLoaded]);
 
   if (!currentCity || cities.length === 0) {
     return (
@@ -160,10 +191,7 @@ export default function GameEngine({
       <div className="absolute top-0 left-0 right-0 z-10 flex justify-between p-4 bg-black/0">
         <RoundCounter current={round} total={5} />
         <Timer timeLeft={timeLeft} />
-        <button
-          onClick={() => (window.location.href = '/play')}
-          className="px-3 py-1 bg-red-500 text-white rounded text-sm"
-        >
+        <button onClick={handleQuit} className="px-3 py-1 bg-red-500 text-white rounded text-sm">
           Quit Game
         </button>
       </div>
@@ -172,6 +200,7 @@ export default function GameEngine({
         lat={currentCity.lat}
         lon={currentCity.lon}
         zoom={getZoomForDifficulty(difficulty)}
+        onMapLoad={handleMapLoad}
       />
 
       <div className="absolute bottom-4 right-4 z-10">
@@ -186,6 +215,7 @@ export default function GameEngine({
         <RoundResult
           result={results[results.length - 1]}
           onNext={nextRound}
+          isGuest={isGuest}
         />
       )}
 
@@ -195,6 +225,7 @@ export default function GameEngine({
           onRestart={() => window.location.reload()}
           mode={mode}
           difficulty={difficulty}
+          isGuest={isGuest}
         />
       )}
     </div>
@@ -210,11 +241,7 @@ function calculateDistance(
   const R = 6371
   const dLat = ((lat2 - lat1) * Math.PI) / 180
   const dLon = ((lon2 - lon1) * Math.PI) / 180
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) ** 2
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
   return R * c
 }
