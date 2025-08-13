@@ -94,7 +94,6 @@ export default function FriendsSlider() {
         ${open ? 'w-72 pt-16' : 'w-10 pt-16'} transition-[width] duration-200 overflow-hidden overflow-x-hidden z-40
       `}
     >
-      {/* Add Friend */}
       <div className="p-2 flex items-center gap-2">
         <input
           value={inputCode}
@@ -119,7 +118,6 @@ export default function FriendsSlider() {
       )}
 
       <div className="flex-grow overflow-auto overflow-x-hidden space-y-2 px-2">
-        {/* Friends section */}
         <hr className="border-gray-700" />
         <div className="text-sm font-semibold text-gray-400 text-center">
           {open ? (
@@ -177,7 +175,6 @@ export default function FriendsSlider() {
           </div>
         ))}
 
-        {/* Requests section */}
         <hr className="border-gray-700" />
         <div className="text-sm font-semibold text-gray-400 text-center">
           {open ? (
