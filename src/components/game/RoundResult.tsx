@@ -24,6 +24,7 @@ export default function RoundResult({
     if (!mapRef.current) {
       mapRef.current = L.map(containerRef.current, {
         zoomControl: false,
+        attributionControl: false,
         scrollWheelZoom: false,
         doubleClickZoom: false,
         touchZoom: false,
@@ -36,6 +37,7 @@ export default function RoundResult({
         `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`, 
         { 
           maxZoom: 19,
+          
         }
       ).addTo(mapRef.current);
       
