@@ -1,14 +1,15 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
-import SiteFooter from '@/components/web/Footer'
 
 interface FinalResultProps {
   results: any[]
   onRestart: () => void
   mode: string
   difficulty: 'easy' | 'medium' | 'hard'
+  isGuest?: boolean
 }
 
 export default function FinalResult({
@@ -16,16 +17,22 @@ export default function FinalResult({
   onRestart,
   mode,
   difficulty,
+  isGuest = false,
 }: FinalResultProps) {
   const totalScore = results.reduce((sum, result) => sum + result.score, 0)
   const avgAccuracy =
     results.reduce((sum, result) => sum + result.accuracy, 0) / results.length
   const totalDistance = results.reduce((sum, result) => sum + result.distance, 0)
   const totalTimePlayed = results.reduce((sum, result) => sum + result.timeSpent, 0)
+  const router = useRouter()
 
   const saveAttempted = useRef(false)
 
   useEffect(() => {
+    if (isGuest) {
+      return;
+    }
+
     const saveGame = async () => {
       if (saveAttempted.current) return
 
@@ -60,12 +67,14 @@ export default function FinalResult({
     }
 
     saveGame()
-  }, [results, mode, difficulty, totalScore, avgAccuracy, totalTimePlayed])
+  }, [results, mode, difficulty, totalScore, avgAccuracy, totalTimePlayed, isGuest])
 
   return (
     <div className="bg-[url('/bg2.jpg')] fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-black/10 backdrop-round-lg rounded-xl p-8 max-w-3xl w-full mx-4">
-        <h2 className="text-3xl font-bold mb-6 text-center">Game Complete!</h2>
+      <div className="bg-black/10 backdrop-blur-lg rounded-xl p-8 max-w-3xl w-full mx-4">
+        <h2 className="text-3xl font-bold mb-6 text-center">
+          Game Complete!
+        </h2>
 
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="bg-black/10 p-4 rounded-lg text-center">
@@ -92,7 +101,7 @@ export default function FinalResult({
             {results.map((result, index) => (
               <div
                 key={index}
-                className="flex justify-between items-center border-b pb-2"
+                className="flex justify-between items-center border-b border-white/20 pb-2"
               >
                 <div>
                   <span className="font-bold">Round {index + 1}:</span>
@@ -111,18 +120,31 @@ export default function FinalResult({
         </div>
 
         <div className="flex justify-center gap-4">
-          <button
-            onClick={onRestart}
-            className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-bold"
-          >
-            Play Again
-          </button>
-          <button
-            onClick={() => (window.location.href = '/play')}
-            className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-bold"
-          >
-            Back to Menu
-          </button>
+          {isGuest ? (
+            <div className="text-center">
+              <button
+                onClick={() => router.push('/')}
+                className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-bold text-lg"
+              >
+                Sign Up to Play More!
+              </button>
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={onRestart}
+                className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-bold"
+              >
+                Play Again
+              </button>
+              <button
+                onClick={() => router.push('/play')}
+                className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-bold"
+              >
+                Back to Menu
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
