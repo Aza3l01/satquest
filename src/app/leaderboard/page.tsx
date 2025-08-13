@@ -5,16 +5,13 @@ import { supabase } from '@/lib/supabaseClient'
 import NavBar from '@/components/web/NavBar'
 import SiteFooter from '@/components/web/Footer'
 import FriendsSlider from '@/components/web/FriendsSlider'
-// Import our new component
 import CustomDropdown, { DropdownOption } from '@/components/web/CustomDropdown'
 
-// Types
 type Country = { id: string; name: string; iso2: string }
 type Profile = { display_name: string; avatar_url: string | null }
 type LeaderboardEntry = { score: number; avg_accuracy: number; display_name: string; avatar_url: string | null }
 type UserRank = { rank: number | null; high_score: number | null; high_accuracy: number | null }
 
-// --- CHANGE: Updated leaderboard types and order ---
 const leaderboardTypes = [
   { id: 'classic', label: 'Classic' },
   { id: 'casual', label: 'Casual' },
@@ -23,7 +20,6 @@ const leaderboardTypes = [
   { id: 'party', label: 'Party' },
 ]
 
-// Data for the difficulty dropdown
 const difficultyOptions: DropdownOption[] = [
     { value: 'easy', name: 'Easy' },
     { value: 'medium', name: 'Medium' },
@@ -43,19 +39,15 @@ const Avatar = ({ profile }: { profile: { display_name: string; avatar_url: stri
 }
 
 const LeaderboardPage = () => {
-  // --- CHANGE: Default selected tab is now 'classic' ---
   const [selectedTab, setSelectedTab] = useState('classic')
   const [countries, setCountries] = useState<Country[]>([])
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([])
   const [userRank, setUserRank] = useState<UserRank | null>(null)
   const [loading, setLoading] = useState(true)
   const [userId, setUserId] = useState<string | null>(null)
-
-  // State for the dropdowns
   const [selectedMode, setSelectedMode] = useState<DropdownOption>({ value: 'world', name: 'World' })
   const [selectedDifficulty, setSelectedDifficulty] = useState<DropdownOption>(difficultyOptions[0])
 
-  // Prepare country data for the dropdown
   const countryOptions: DropdownOption[] = [
     { value: 'world', name: 'World' },
     ...countries.map(c => ({ value: c.id, name: c.name }))
@@ -123,7 +115,6 @@ const LeaderboardPage = () => {
       </div>
 
       <div className="flex-grow w-full max-w-4xl mx-auto px-6 py-8">
-        {/* --- CHANGE: Check for 'classic' tab to show the leaderboard --- */}
         {selectedTab === 'classic' ? (
           <div className="bg-black/10 backdrop-blur-md rounded-lg overflow-hidden">
             <div className="flex items-center gap-3 p-3 border-b border-white/10">

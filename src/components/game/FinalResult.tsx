@@ -31,7 +31,7 @@ export default function FinalResult({
 
   useEffect(() => {
     if (isGuest) {
-      return; // Do not save game results for guests
+      return;
     }
 
     const saveGame = async () => {
@@ -49,7 +49,6 @@ export default function FinalResult({
         return
       }
 
-      // --- CHANGE: Updated table name to 'classic_games' ---
       const { error: insertError } = await supabase.from('classic_games').insert([
         {
           user_id: user.id,

@@ -15,7 +15,6 @@ type Country = {
 
 const difficultyLevels = ['easy', 'medium', 'hard']
 
-// --- CHANGE: Renamed component ---
 const ClassicPage = () => {
   const router = useRouter()
   const [userEmail, setUserEmail] = useState<string | null>(null)
@@ -53,7 +52,6 @@ const ClassicPage = () => {
 
   const handleStart = () => {
     if (!selectedCountry) return
-    // --- CHANGE: Updated the route to '/play/classic/' ---
     router.push(`/play/classic/${selectedCountry.id}?difficulty=${selectedDifficulty}`)
   }
 
@@ -187,5 +185,4 @@ const ClassicPage = () => {
   )
 }
 
-// --- CHANGE: Renamed export ---
 export default ClassicPage

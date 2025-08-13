@@ -17,7 +17,6 @@ interface ClassicGame {
   played_at: string
 }
 
-// --- CHANGE: Defined the new tabs with their IDs and labels ---
 const profileTabs = [
   { id: 'classic', label: 'Classic' },
   { id: 'casual', label: 'Casual' },
@@ -31,7 +30,6 @@ export default function PublicProfilePage() {
   const [profile, setProfile] = useState<any>(null)
   const [games, setGames] = useState<ClassicGame[]>([])
   const [loading, setLoading] = useState(true)
-  // --- CHANGE: Updated activeTab state to use the new IDs ---
   const [activeTab, setActiveTab] = useState('classic')
 
   useEffect(() => {
@@ -113,7 +111,6 @@ export default function PublicProfilePage() {
 
         <div className="mb-6">
           <div className="flex gap-4 border-b border-gray-700 mb-4">
-            {/* --- CHANGE: Looping over the new profileTabs array --- */}
             {profileTabs.map((tab) => (
               <button
                 key={tab.id}
@@ -128,10 +125,8 @@ export default function PublicProfilePage() {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Stats</h2>
-          {/* --- CHANGE: Checking for 'classic' tab --- */}
           {activeTab === 'classic' ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-black/10 p-4 rounded-lg text-center">
@@ -152,10 +147,8 @@ export default function PublicProfilePage() {
           )}
         </div>
 
-        {/* Recent Games */}
         <div className="bg-black/10 p-6 rounded-lg">
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Recent Games</h2>
-          {/* --- CHANGE: Checking for 'classic' tab --- */}
           {activeTab === 'classic' ? (
             games.length === 0 ? (
               <p className="text-gray-400 text-center py-8">No games played yet</p>

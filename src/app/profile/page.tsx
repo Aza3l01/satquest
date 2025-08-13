@@ -9,7 +9,6 @@ import NavBar from '@/components/web/NavBar'
 import FriendsSlider from '@/components/web/FriendsSlider'
 import SiteFooter from '@/components/web/Footer'
 
-// --- CHANGE: Renamed interface for clarity ---
 interface ClassicGame {
   id: string
   mode: string
@@ -19,7 +18,6 @@ interface ClassicGame {
   played_at: string
 }
 
-// --- CHANGE: Defined the new tabs with their IDs and labels ---
 const profileTabs = [
   { id: 'classic', label: 'Classic' },
   { id: 'casual', label: 'Casual' },
@@ -33,7 +31,6 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null)
   const [games, setGames] = useState<ClassicGame[]>([])
   const [loading, setLoading] = useState(true)
-  // --- CHANGE: Updated activeTab state to use the new IDs ---
   const [activeTab, setActiveTab] = useState('classic')
   const [copied, setCopied] = useState(false)
   const router = useRouter()
@@ -50,7 +47,6 @@ export default function ProfilePage() {
       const profileData = await getProfile(data.user.id)
       setProfile(profileData)
 
-      // The database table is still named 'singleplayer_games' for now
       const { data: gameData, error } = await supabase
         .from('classic_games')
         .select('*')
@@ -69,7 +65,6 @@ export default function ProfilePage() {
 
   const handleCopy = () => {
     if (!user?.id) return
-    // Using a fallback for navigator.clipboard for wider compatibility
     const textArea = document.createElement('textarea')
     textArea.value = user.id
     document.body.appendChild(textArea)
@@ -105,7 +100,6 @@ export default function ProfilePage() {
       <FriendsSlider />
 
       <div className="max-w-5xl mx-auto px-6 pt-24 pb-8">
-        {/* Header */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8">
           <div className="flex-shrink-0">
             {profile?.avatar_url ? (
@@ -146,10 +140,8 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="mb-6">
           <div className="flex gap-4 border-b border-gray-700 mb-4">
-            {/* --- CHANGE: Looping over the new profileTabs array --- */}
             {profileTabs.map((tab) => (
               <button
                 key={tab.id}
@@ -164,10 +156,8 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Stats</h2>
-          {/* --- CHANGE: Checking for 'classic' tab --- */}
           {activeTab === 'classic' ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-black/10 p-4 rounded-lg text-center">
@@ -188,10 +178,8 @@ export default function ProfilePage() {
           )}
         </div>
 
-        {/* Recent Games */}
         <div className="bg-black/10 p-6 rounded-lg">
           <h2 className="text-xl font-bold mb-4 text-emerald-400">Recent Games</h2>
-          {/* --- CHANGE: Checking for 'classic' tab --- */}
           {activeTab === 'classic' ? (
             games.length === 0 ? (
               <p className="text-gray-400 text-center py-8">No games played yet</p>

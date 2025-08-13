@@ -6,7 +6,6 @@ import NavBar from '@/components/web/NavBar'
 import FriendsSlider from '@/components/web/FriendsSlider'
 import SiteFooter from '@/components/web/Footer'
 
-// --- CHANGE: Updated the modes array with the new names and order ---
 const modes = [
   {
     id: 'classic',
@@ -56,7 +55,6 @@ const modes = [
 ]
 
 export default function PlayPage() {
-  // --- CHANGE: Default mode is now 'classic' ---
   const [selectedMode, setSelectedMode] = useState('classic')
   const router = useRouter()
 
