@@ -91,7 +91,6 @@ export default function PlayPage() {
 
       <main className="flex-grow flex items-center justify-center px-6">
         <div className="flex flex-col md:flex-row w-full max-w-5xl justify-between items-center gap-12">
-          {/* Left: Announcement */}
           <div className="w-full md:w-1/2">
             <h2 className="text-xl font-semibold text-center mb-4">Announcements</h2>
             <p className="text-white/90 text-sm leading-relaxed text-center max-w-md mx-auto">
