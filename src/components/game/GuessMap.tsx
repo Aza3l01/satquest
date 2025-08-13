@@ -25,7 +25,8 @@ export default function GuessMap({
     if (!mapRef.current) {
       const mapInstance = L.map(containerRef.current, {
         center: [0, 0],
-        zoom: 1,
+        zoom: 2,
+        minZoom: 2,
         zoomControl: false,
         attributionControl: false
       });
