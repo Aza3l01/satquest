@@ -22,8 +22,8 @@ const modes = [
     description: 'Play casual, unranked matches with other players (In development).',
     announcement:
       'Casual multiplayer is under development. A chill way to play with the community.',
-    route: null,
-    enabled: false,
+    route: '/play/casual',
+    enabled: true,
   },
   {
     id: 'ranked',
