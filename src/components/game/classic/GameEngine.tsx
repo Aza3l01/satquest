@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
-import SatelliteMap from '@/components/game/SatelliteMap'
-import Timer from '@/components/game/Timer'
-import RoundCounter from '@/components/game/RoundCounter'
-import RoundResult from '@/components/game/RoundResult'
-import FinalResult from '@/components/game/FinalResult'
+import SatelliteMap from '@/components/game/common/SatelliteMap'
+import Timer from '@/components/game/common/Timer'
+import RoundCounter from '@/components/game/common/RoundCounter'
+import RoundResult from '@/components/game/classic/RoundResult'
+import FinalResult from '@/components/game/classic/FinalResult'
 
-const GuessMap = dynamic(() => import('@/components/game/GuessMap'), {
+const GuessMap = dynamic(() => import('@/components/game/common/GuessMap'), {
   ssr: false,
   loading: () => <div className="min-w-[180px] min-h-[135px] bg-gray-800 rounded-lg flex items-center justify-center"><p className="text-white/50 text-sm">Loading map...</p></div>
 });
