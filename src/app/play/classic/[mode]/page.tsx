@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams, useParams } from 'next/navigation';
-import GameEngine from '@/components/game/GameEngine';
+import GameEngine from '@/components/game/classic/GameEngine';
 
 export default function GamePageClient() {
   const searchParams = useSearchParams();
