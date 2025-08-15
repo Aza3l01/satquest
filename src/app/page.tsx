@@ -76,13 +76,13 @@ export default function HomePage() {
 
             <div className="mt-8">
               <button
-                onClick={() => router.push('/play/classic/world?difficulty=medium&guest=true')}
+                onClick={() => router.push('/play/classic/world?difficulty=easy&guest=true')}
                 className="px-6 py-2 border border-white/50 hover:bg-white/10 text-white rounded-lg font-bold transition"
               >
                 Try Without Signing Up
               </button>
               <p className="text-xs text-gray-400 mt-2">
-                This is a demo of Classic World on Medium difficulty. Sign up to save your progress and play other types, modes and difficulties.
+                This is a demo of Classic World on Easy difficulty. Sign up to save your progress and play other types, modes and difficulties.
               </p>
             </div>
           </div>
