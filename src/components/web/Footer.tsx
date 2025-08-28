@@ -15,7 +15,7 @@ export default function SiteFooter() {
             </Link>
           </span>
 
-          <a
+          {/* <a
             href="https://ko-fi.com/V7V31ITD4Y"
             target="_blank"
             rel="noopener noreferrer"
@@ -26,7 +26,7 @@ export default function SiteFooter() {
               src="https://storage.ko-fi.com/cdn/kofi5.png?v=6"
               alt="Buy Me a Coffee at ko-fi.com"
             />
-          </a>
+          </a> */}
 
           <div className="flex items-center gap-3">
             <Link href="https://discord.gg/2bQU7xAdnP" target="_blank">

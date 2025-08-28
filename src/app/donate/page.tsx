@@ -66,7 +66,14 @@ export default function DonatePage() {
           <iframe 
             id="kofiframe" 
             src="https://ko-fi.com/satquestgame/?hidefeed=true&widget=true&transparent=true"
-            style={{ border: "none", width: "40%", height: "640px", background: "transparent" }}
+            style={{ 
+              border: "none", 
+              width: "45%", 
+              height: "560px", 
+              background: "transparent",
+              borderRadius: "12px",
+              boxShadow: "4px 4px 12px rgba(0,0,0,0.15)"
+            }}
             height="600" 
             title="satquestgame"
           ></iframe>
