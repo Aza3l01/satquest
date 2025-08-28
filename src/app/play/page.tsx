@@ -23,7 +23,7 @@ const modes = [
     announcement:
       'Casual multiplayer is under development. A chill way to play with the community.',
     route: '/play/casual',
-    enabled: true,
+    enabled: false,
   },
   {
     id: 'ranked',
